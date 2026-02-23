@@ -2,11 +2,11 @@
 Description=CAMN-Run-Purple-Air
 
 [Service]
-ExecStart=/usr/bin/python3 /home/zero/SensorNetwork/run_purple_air.py
+ExecStart=/usr/bin/python3 /home/zero/AQDCS/services/SensorNetwork/run_purple_air.py
 
 Restart=always
 
-WorkingDirectory=/home/zero/SensorNetwork
+WorkingDirectory=/home/zero/AQDCS/services/SensorNetwork
 
 KillSignal=SIGINT
 

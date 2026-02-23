@@ -2,11 +2,11 @@
 Description=CAMN-Run-Wind-Sensor
 
 [Service]
-ExecStart=/usr/bin/python3 /home/zero/SensorNetwork/run_wind_sensor.py
+ExecStart=/usr/bin/python3 /home/zero/AQDCS/services/SensorNetwork/run_wind_sensor.py
 
 Restart=always
 
-WorkingDirectory=/home/zero/SensorNetwork
+WorkingDirectory=/home/zero/AQDCS/services/SensorNetwork
 
 KillSignal=SIGINT
 
