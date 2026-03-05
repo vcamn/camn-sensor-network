@@ -1,2 +1,2 @@
-# AQDCS
-Cloud-based environmental data collection system for air quality monitoring (Air Quality Data Collection System / AQDCS)
+# CAMN Sensor Network
+Edge and Cloud-based air quality data collection system for the Citizen Air Monitoring Network (CAMN)
