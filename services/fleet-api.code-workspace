@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "cloud/api/fleet-api"
+		},
+		{
+			"path": "shared/contracts/fleet"
+		}
+	],
+	"settings": {
+		"dotnet.defaultSolution": "fleet-api/Fleet.slnx"
+	}
+}
