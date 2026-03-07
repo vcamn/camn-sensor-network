@@ -692,6 +692,9 @@ ScaffoldingReadMe.txt
 *~
 CodeCoverage/
 
+# Appsettings for specific environments
+appsettings.[Dd]evelopment.json
+
 # MSBuild Binary and Structured Log
 *.binlog
 
