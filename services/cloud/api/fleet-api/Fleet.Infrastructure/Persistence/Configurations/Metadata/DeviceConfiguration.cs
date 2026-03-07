@@ -1,9 +1,9 @@
 using System;
-using Fleet.Domain;
+using Fleet.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Fleet.Infrastructure.Persistence.Configurations;
+namespace Fleet.Infrastructure.Persistence.Configurations.Metadata;
 
 public class DeviceConfiguration : IEntityTypeConfiguration<Device>
 {

@@ -1,5 +1,5 @@
 using System;
-using Fleet.Domain;
+using Fleet.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fleet.Infrastructure.Persistence;
