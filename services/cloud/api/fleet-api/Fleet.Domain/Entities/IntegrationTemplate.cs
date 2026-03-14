@@ -9,7 +9,7 @@ public class IntegrationTemplate
 
     public Guid SensorTypeId { get; set; }
 
-    public IntegrationType IntegrationType { get; set; } // ["EDGE_DEVICE", "EXTERNAL_API", "MANUAL_UPLOAD", "Other"]
+    public Guid IntegrationTypeId { get; set; }
 
     public string Description { get; set; }
 
@@ -19,7 +19,9 @@ public class IntegrationTemplate
 
     public DateTime UpdatedAtUtc { get; set; }
 
+    public IntegrationType IntegrationType { get; set; } 
+
     public SensorType SensorType { get; set; }
 
-    public ICollection<SensorIntegration> SensorIntegrations { get; set; }
+    public ICollection<SensorIntegration> SensorIntegrations { get; set; } = [];
 }

@@ -43,10 +43,6 @@ public class SiteConfiguration : IEntityTypeConfiguration<Site>
               .HasMaxLength(24)
               .HasDefaultValue("USA");
 
-       builder.Property(e => e.DeploymentStatus)
-              .IsRequired()
-              .HasMaxLength(32);
-
        builder.Property(e => e.ContactName)
               .IsRequired()
               .HasMaxLength(128);
@@ -54,5 +50,13 @@ public class SiteConfiguration : IEntityTypeConfiguration<Site>
        builder.Property(e => e.ContactEmail)
               .IsRequired()
               .HasMaxLength(256);
+
+       builder.Property(e => e.CreatedAtUtc)
+              .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+       builder.HasOne(e => e.Status)
+              .WithMany(s => s.Sites)
+              .HasForeignKey(e => e.SiteStatusId)
+              .OnDelete(DeleteBehavior.NoAction);
     }
 }

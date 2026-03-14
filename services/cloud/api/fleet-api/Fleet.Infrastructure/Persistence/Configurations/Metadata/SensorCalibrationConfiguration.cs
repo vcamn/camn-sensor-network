@@ -21,6 +21,9 @@ public class SensorCalibrationConfiguration : IEntityTypeConfiguration<SensorCal
             .IsRequired(false)
             .HasMaxLength(128);
 
+        builder.Property(e => e.CreatedAtUtc)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
         builder.HasOne(e => e.Sensor)
             .WithMany(s => s.SensorCalibrations)
             .HasForeignKey(e => e.SensorId)

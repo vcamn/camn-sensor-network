@@ -16,17 +16,22 @@ public class SensorConfiguration : IEntityTypeConfiguration<Sensor>
        builder.Property(e => e.SensorIdentifier)
               .IsRequired()
               .HasMaxLength(48);
-              
-       builder.Property(e => e.SensorStatus)
-              .IsRequired()
-              .HasMaxLength(24);
 
        builder.Property(e => e.UnitOfMeasure)
               .IsRequired()
               .HasMaxLength(16);
 
+       builder.Property(e => e.CreatedAtUtc)
+              .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+       builder.HasOne(e => e.Status)
+              .WithMany(s => s.Sensors)
+              .HasForeignKey(e => e.SensorStatusId)
+              .IsRequired()
+              .OnDelete(DeleteBehavior.NoAction);
+
        builder.HasOne(e => e.SensorType)
-              .WithMany(st => st.Sensors)
+              .WithMany(s => s.Sensors)
               .HasForeignKey(e => e.SensorTypeId)
               .IsRequired()
               .OnDelete(DeleteBehavior.NoAction);

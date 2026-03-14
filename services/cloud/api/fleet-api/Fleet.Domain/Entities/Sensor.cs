@@ -11,10 +11,10 @@ namespace Fleet.Domain.Entities
         public Guid StationId { get; set; }
 
         public Guid? DeviceId { get; set; }
+
+        public Guid SensorStatusId { get; set; }
         
         public string SensorIdentifier { get; set; }
-
-        public string SensorStatus { get; set; }
         
         public string UnitOfMeasure { get; set; }
 
@@ -24,14 +24,16 @@ namespace Fleet.Domain.Entities
 
         public DateTime UpdatedAtUtc { get; set; }
 
+        public SensorStatus Status { get; set; }
+
         public SensorType SensorType { get; set; }
 
         public Station Station { get; set; }
 
         public Device? Device { get; set; }
 
-        public ICollection<SensorIntegration> SensorIntegrations { get; set; }
+        public ICollection<SensorIntegration> SensorIntegrations { get; set; } = [];
 
-        public ICollection<SensorCalibration> SensorCalibrations { get; set; }
+        public ICollection<SensorCalibration> SensorCalibrations { get; set; } = [];
     }
 }

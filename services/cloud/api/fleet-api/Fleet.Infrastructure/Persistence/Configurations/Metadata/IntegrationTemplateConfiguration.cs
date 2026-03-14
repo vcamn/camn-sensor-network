@@ -13,10 +13,6 @@ public class IntegrationTemplateConfiguration : IEntityTypeConfiguration<Integra
 
         builder.HasKey(e => e.Id);
 
-        builder.Property(e => e.IntegrationType)
-            .IsRequired()
-            .HasMaxLength(32);
-
         builder.Property(e => e.Description)
             .HasMaxLength(256);
 
@@ -25,11 +21,18 @@ public class IntegrationTemplateConfiguration : IEntityTypeConfiguration<Integra
             .HasColumnType("jsonb");
 
         builder.Property(e => e.CreatedAtUtc)
-            .HasDefaultValueSql("GETUTCDATE()");
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+        builder.HasOne(e => e.IntegrationType)
+            .WithMany(it => it.IntegrationTemplates)
+            .HasForeignKey(e => e.IntegrationTypeId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(e => e.SensorType)
             .WithMany(st => st.IntegrationTemplates)
             .HasForeignKey(e => e.SensorTypeId)
+            .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

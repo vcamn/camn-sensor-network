@@ -6,6 +6,8 @@ namespace Fleet.Domain.Entities
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        public Guid SiteStatusId { get; set; }
+
         public string SiteName { get; set; }
 
         public string AddressLine1 { get; set; }
@@ -24,8 +26,6 @@ namespace Fleet.Domain.Entities
 
         public double? Longitude { get; set; }
 
-        public string DeploymentStatus { get; set; }
-
         public DateTime? InstalledAtUtc { get; set; }
 
         public DateTime? LastMaintenanceAtUtc { get; set; }
@@ -38,6 +38,8 @@ namespace Fleet.Domain.Entities
 
         public DateTime UpdatedAtUtc { get; set; }
 
-        public ICollection<Station> Stations { get; set; }
+        public SiteStatus Status { get; set; }
+
+        public ICollection<Station> Stations { get; set; } = [];
     }
 }

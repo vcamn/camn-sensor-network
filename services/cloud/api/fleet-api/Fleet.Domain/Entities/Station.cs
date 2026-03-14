@@ -8,6 +8,8 @@ namespace Fleet.Domain.Entities
 
         public Guid SiteId { get; set; }
 
+        public Guid StationStatusId { get; set; }
+
         public string StationCode { get; set; }
 
         public string Description { get; set; }
@@ -16,10 +18,12 @@ namespace Fleet.Domain.Entities
 
         public DateTime UpdatedAtUtc { get; set; }
 
+        public StationStatus Status { get; set; }
+
         public Site Site { get; set; }
 
-        public ICollection<Sensor> Sensors { get; set; }
+        public ICollection<Sensor> Sensors { get; set; } = [];
 
-        public ICollection<Device> Devices { get; set; }
+        public ICollection<Device> Devices { get; set; } = [];
     }
 }

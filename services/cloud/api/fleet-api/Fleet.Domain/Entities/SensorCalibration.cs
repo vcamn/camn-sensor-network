@@ -15,6 +15,10 @@ namespace Fleet.Domain.Entities
         public string CalibrationMethod { get; set; }
 
         public string PerformedBy { get; set; }
+            
+        public DateTime CreatedAtUtc { get; set; }
+
+        public DateTime UpdatedAtUtc { get; set; }
 
         public Sensor Sensor { get; set; }
     }

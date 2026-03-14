@@ -1,13 +1,15 @@
+using System;
 using Fleet.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Fleet.Infrastructure.Persistence.Configurations.Metadata;
 
-public class SensorTypeConfiguration : IEntityTypeConfiguration<SensorType>
+public class IntegrationTypeConfiguration : IEntityTypeConfiguration<IntegrationType>
 {
-    public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<SensorType> builder)
+    public void Configure(EntityTypeBuilder<IntegrationType> builder)
     {
-        builder.ToTable("sensor_types");
+        builder.ToTable("integration_types");
 
         builder.HasKey(e => e.Id);
 
@@ -17,8 +19,5 @@ public class SensorTypeConfiguration : IEntityTypeConfiguration<SensorType>
 
         builder.Property(e => e.Description)
                .HasMaxLength(256);
-
-        builder.Property(e => e.CreatedAtUtc)
-               .HasDefaultValueSql("CURRENT_TIMESTAMP");
     }
 }
