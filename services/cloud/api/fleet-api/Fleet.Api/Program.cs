@@ -6,7 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<FleetDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("FleetDb"));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("FleetDb"),
+        npgsqlOptions =>
+        {
+            npgsqlOptions.MigrationsHistoryTable(
+                "__EFMigrationsHistory", 
+                "metadata");
+        }   
+    )
+    .UseSnakeCaseNamingConvention();
 });
 
 builder.Services.AddControllers();

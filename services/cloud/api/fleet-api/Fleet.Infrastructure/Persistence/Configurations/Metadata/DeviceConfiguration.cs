@@ -31,7 +31,8 @@ public class DeviceConfiguration : IEntityTypeConfiguration<Device>
 
        builder.Property(e => e.IoTHubDeviceId)
               .IsRequired(false)
-              .HasMaxLength(128);
+              .HasMaxLength(128)
+              .HasColumnName("iot_hub_device_id");
 
        builder.Property(e => e.FirmwareVersion)
               .IsRequired(false)
