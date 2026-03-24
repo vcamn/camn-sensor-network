@@ -1,5 +1,4 @@
 using System;
-using Fleet.Domain.Enums;
 
 namespace Fleet.Domain.Entities;
 
