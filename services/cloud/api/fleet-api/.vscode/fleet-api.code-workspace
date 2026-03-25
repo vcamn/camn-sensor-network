@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"name": "Root",
+			"path": "../../../../../"
+		},
+		{
+			"name": "Fleet API",
+			"path": "../../fleet-api"
+		},
+		{
+			"name": "Fleet Contracts",
+			"path": "../../../../shared/contracts"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"services/": true,
+		},
+		"dotnet.defaultSolution": "Fleet.slnx"
+	}
+}
