@@ -1,0 +1,18 @@
+
+-- 1. Create application role (DO blocks are fine for ROLES)
+DO $$
+BEGIN
+   IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '${CAMN_APP_USER}') THEN
+      CREATE ROLE ${CAMN_APP_USER} LOGIN PASSWORD '${CAMN_APP_PASSWORD}';
+   END IF;
+END $$;
+
+-- 2. Enable extensions and schemas 
+-- (Note: \c is handled in the bash script now for reliability)
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE SCHEMA IF NOT EXISTS metadata AUTHORIZATION ${CAMN_APP_USER};
+
+-- 3. Privileges
+GRANT ALL PRIVILEGES ON SCHEMA metadata TO ${CAMN_APP_USER};
+ALTER DEFAULT PRIVILEGES IN SCHEMA metadata GRANT ALL ON TABLES TO ${CAMN_APP_USER};
+ALTER DEFAULT PRIVILEGES IN SCHEMA metadata GRANT ALL ON SEQUENCES TO ${CAMN_APP_USER};

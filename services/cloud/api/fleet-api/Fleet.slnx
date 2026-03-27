@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Fleet.Api/Fleet.Api.csproj" />
+  <Project Path="Fleet.Domain/Fleet.Domain.csproj" />
+  <Project Path="Fleet.Infrastructure/Fleet.Infrastructure.csproj" />
+</Solution>
