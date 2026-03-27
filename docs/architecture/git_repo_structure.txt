@@ -1,0 +1,78 @@
+camn-sensor-network/
+│
+├── README.md
+├── docs/
+│   ├── architecture/
+│   ├── diagrams/
+│   ├── decisions/
+│   └── runbooks/
+│
+├── infra/                     # Infrastructure and environments
+│   ├── database/ (PostgreSQL schema initialization)
+│   ├── docker/ (docker-compose yml and container services)
+│   └── scripts/ (Development environments provisioning, CI pipelines)
+│
+├── services
+|   ├── cloud
+|   │   ├── api
+|   │   │   └── fleet-api
+|   │   └── functions
+|   │       └── ingestion-function
+|   ├── edge
+|   │   ├── docker
+|   │   └── sensor-node
+|   │       ├── config
+|   │       ├── logs
+|   │       ├── scripts
+|   │       ├── src
+|   │       │   ├── config
+|   │       │   ├── main.py
+|   │       │   ├── sensors
+|   │       │   └── telemetry
+|   │       ├── systemd
+|   │       └── tests
+|   ├── shared
+|   │   └── contracts
+|   │       ├── fleet
+|   │       │   └── v1
+|   │       └── telemetry
+|   │           └── v1
+|   └── web
+|       └── fleet-control
+|
+└── .github/
+    └── workflows/
+	
+	
+Clean Separation of Concerns:
+
+edge/ = runs on Raspberry Pi
+
+cloud/ = backend Azure workloads
+
+web/ = React SPA or VueJS (TBD)
+
+infra/ = Local development environments provisioning, Azure provisioning, CI/CD pipelines
+
+No confusion.
+---
+
+Supports Future Expansion
+
+Phase 2 public portal?
+
+Add:
+web/public-portal/
+---
+
+CI/CD Friendly
+
+You can:
+
+Trigger builds only when edge/ changes
+
+Trigger separate pipeline for web/
+
+Trigger separate pipeline for cloud/
+
+Without repo sprawl.

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -a
-source infra/docker/postgres/init/.env
+source infra/docker/postgres/.env
 set +a
 
 echo "Initializing database..."

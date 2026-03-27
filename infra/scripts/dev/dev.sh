@@ -5,7 +5,7 @@
 
 set -e # exit on error
 
-ENV_FILE="infra/docker/postgres/init/.env"
+ENV_FILE="infra/docker/postgres/.env"
 
 # Load env
 if [ -f "$ENV_FILE" ]; then
@@ -45,7 +45,7 @@ stop_db() {
 }
 
 logs_db() {
-  docker compose -f infra/docker/postgres/init/docker-compose.yml logs postgres
+  docker compose -f infra/docker/postgres/docker-compose.yml logs postgres
 }
 
 # --- Commands ---
