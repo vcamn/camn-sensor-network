@@ -2,15 +2,15 @@
 	"folders": [
 		{
 			"name": "Root",
-			"path": "../../../../../"
+			"path": "."
 		},
 		{
 			"name": "Fleet API",
-			"path": "../../fleet-api"
+			"path": "./services/cloud/api/fleet-api/"
 		},
 		{
 			"name": "Fleet Contracts",
-			"path": "../../../../shared/contracts"
+			"path": "./services/shared/contracts/"
 		}
 	],
 	"settings": {
