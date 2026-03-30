@@ -12,7 +12,7 @@ builder.Services.AddDbContext<FleetDbContext>(options =>
         {
             npgsqlOptions.MigrationsHistoryTable(
                 "__EFMigrationsHistory", 
-                "metadata");
+                "admin");
         }   
     )
     .UseSnakeCaseNamingConvention();
