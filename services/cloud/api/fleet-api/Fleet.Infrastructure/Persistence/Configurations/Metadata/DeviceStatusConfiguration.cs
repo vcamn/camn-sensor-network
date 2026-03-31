@@ -20,6 +20,9 @@ public class DeviceStatusConfiguration : IEntityTypeConfiguration<DeviceStatus>
             .IsRequired()
             .HasMaxLength(16);
 
+        builder.HasIndex(e => e.StatusName)
+            .IsUnique();
+
         builder.Property(e => e.StatusName)
             .IsRequired()
             .HasMaxLength(32);

@@ -20,6 +20,9 @@ public class SiteStatusConfiguration : IEntityTypeConfiguration<SiteStatus>
             .IsRequired()
             .HasMaxLength(16);
 
+        builder.HasIndex(e => e.StatusName)
+            .IsUnique();
+
         builder.Property(e => e.StatusName)
             .IsRequired()
             .HasMaxLength(32);
