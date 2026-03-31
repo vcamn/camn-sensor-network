@@ -20,6 +20,7 @@ namespace Fleet.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    code = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
                     status_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     description = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     display_order = table.Column<int>(type: "integer", nullable: false)
@@ -50,6 +51,7 @@ namespace Fleet.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    code = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
                     status_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     description = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     display_order = table.Column<int>(type: "integer", nullable: false)
@@ -83,6 +85,7 @@ namespace Fleet.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    code = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
                     status_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     display_order = table.Column<int>(type: "integer", nullable: false)
@@ -98,6 +101,7 @@ namespace Fleet.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    code = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
                     status_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     display_order = table.Column<int>(type: "integer", nullable: false)
@@ -343,6 +347,13 @@ namespace Fleet.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "ix_device_statuses_code",
+                schema: "metadata",
+                table: "device_statuses",
+                column: "code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_devices_device_status_id",
                 schema: "metadata",
                 table: "devices",
@@ -391,6 +402,13 @@ namespace Fleet.Infrastructure.Migrations
                 column: "sensor_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_sensor_statuses_code",
+                schema: "metadata",
+                table: "sensor_statuses",
+                column: "code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_sensors_device_id",
                 schema: "metadata",
                 table: "sensors",
@@ -415,10 +433,24 @@ namespace Fleet.Infrastructure.Migrations
                 column: "station_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_site_statuses_code",
+                schema: "metadata",
+                table: "site_statuses",
+                column: "code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_sites_site_status_id",
                 schema: "metadata",
                 table: "sites",
                 column: "site_status_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_station_statuses_code",
+                schema: "metadata",
+                table: "station_statuses",
+                column: "code",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_stations_site_id",

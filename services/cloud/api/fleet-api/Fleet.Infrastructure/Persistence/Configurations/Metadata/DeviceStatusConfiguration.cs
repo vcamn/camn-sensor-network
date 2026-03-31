@@ -13,6 +13,13 @@ public class DeviceStatusConfiguration : IEntityTypeConfiguration<DeviceStatus>
 
         builder.HasKey(e => e.Id);
 
+        builder.HasIndex(e => e.Code)
+            .IsUnique();
+
+        builder.Property(e => e.Code)
+            .IsRequired()
+            .HasMaxLength(16);
+
         builder.Property(e => e.StatusName)
             .IsRequired()
             .HasMaxLength(32);

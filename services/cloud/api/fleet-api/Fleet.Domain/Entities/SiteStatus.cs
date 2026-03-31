@@ -6,6 +6,8 @@ public class SiteStatus
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 
+    public string Code { get; set; } = default!;
+
     public string StatusName { get; set; } = default!;
 
     public string? Description { get; set; }

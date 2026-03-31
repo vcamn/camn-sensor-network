@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Fleet.Infrastructure.Migrations
 {
     [DbContext(typeof(FleetDbContext))]
-    [Migration("20260330200928_InitialMetadata")]
+    [Migration("20260330233525_InitialMetadata")]
     partial class InitialMetadata
     {
         /// <inheritdoc />
@@ -106,6 +106,12 @@ namespace Fleet.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("code");
+
                     b.Property<string>("Description")
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)")
@@ -123,6 +129,10 @@ namespace Fleet.Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_device_statuses");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_device_statuses_code");
 
                     b.ToTable("device_statuses", "metadata");
                 });
@@ -374,6 +384,12 @@ namespace Fleet.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("code");
+
                     b.Property<string>("Description")
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)")
@@ -391,6 +407,10 @@ namespace Fleet.Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_sensor_statuses");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_sensor_statuses_code");
 
                     b.ToTable("sensor_statuses", "metadata");
                 });
@@ -548,6 +568,12 @@ namespace Fleet.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("code");
+
                     b.Property<string>("Description")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)")
@@ -565,6 +591,10 @@ namespace Fleet.Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_site_statuses");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_site_statuses_code");
 
                     b.ToTable("site_statuses", "metadata");
                 });
@@ -620,8 +650,15 @@ namespace Fleet.Infrastructure.Migrations
             modelBuilder.Entity("Fleet.Domain.Entities.StationStatus", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("code");
 
                     b.Property<string>("Description")
                         .HasMaxLength(256)
@@ -640,6 +677,10 @@ namespace Fleet.Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_station_statuses");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_station_statuses_code");
 
                     b.ToTable("station_statuses", "metadata");
                 });

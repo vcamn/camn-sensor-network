@@ -13,8 +13,12 @@ public class StationStatusConfiguration : IEntityTypeConfiguration<StationStatus
 
         builder.HasKey(e => e.Id);
 
-        builder.Property(e => e.Id)
-            .ValueGeneratedNever();
+        builder.HasIndex(e => e.Code)
+            .IsUnique();
+
+        builder.Property(e => e.Code)
+            .IsRequired()
+            .HasMaxLength(16);
 
         builder.Property(e => e.StatusName)
             .IsRequired()
