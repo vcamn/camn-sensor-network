@@ -23,6 +23,7 @@ public class DeviceStatus
 | status_name  |
 | ------------ |
 | Active       |
+| Inactive     |
 | Offline      |
 | Provisioning |
 | Maintenance  |

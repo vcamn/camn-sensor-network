@@ -23,6 +23,7 @@ public class SensorStatus
 | status_name  |
 | ------------ |
 | Active       |
+| Inactive     |
 | Offline      |
 | Provisioning |
 | Maintenance  |
