@@ -14,14 +14,17 @@ namespace Fleet.Infrastructure.Migrations
             migrationBuilder.EnsureSchema(
                 name: "metadata");
 
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:citext", ",,");
+
             migrationBuilder.CreateTable(
                 name: "device_statuses",
                 schema: "metadata",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    code = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
-                    status_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    code = table.Column<string>(type: "citext", maxLength: 16, nullable: false),
+                    status_name = table.Column<string>(type: "citext", maxLength: 32, nullable: false),
                     description = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     display_order = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -51,8 +54,8 @@ namespace Fleet.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    code = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
-                    status_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    code = table.Column<string>(type: "citext", maxLength: 16, nullable: false),
+                    status_name = table.Column<string>(type: "citext", maxLength: 32, nullable: false),
                     description = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     display_order = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -85,8 +88,8 @@ namespace Fleet.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    code = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
-                    status_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    code = table.Column<string>(type: "citext", maxLength: 16, nullable: false),
+                    status_name = table.Column<string>(type: "citext", maxLength: 32, nullable: false),
                     description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     display_order = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -101,8 +104,8 @@ namespace Fleet.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    code = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
-                    status_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    code = table.Column<string>(type: "citext", maxLength: 16, nullable: false),
+                    status_name = table.Column<string>(type: "citext", maxLength: 32, nullable: false),
                     description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     display_order = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -354,6 +357,13 @@ namespace Fleet.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "ix_device_statuses_status_name",
+                schema: "metadata",
+                table: "device_statuses",
+                column: "status_name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_devices_device_status_id",
                 schema: "metadata",
                 table: "devices",
@@ -409,6 +419,13 @@ namespace Fleet.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "ix_sensor_statuses_status_name",
+                schema: "metadata",
+                table: "sensor_statuses",
+                column: "status_name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_sensors_device_id",
                 schema: "metadata",
                 table: "sensors",
@@ -440,6 +457,13 @@ namespace Fleet.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "ix_site_statuses_status_name",
+                schema: "metadata",
+                table: "site_statuses",
+                column: "status_name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_sites_site_status_id",
                 schema: "metadata",
                 table: "sites",
@@ -450,6 +474,13 @@ namespace Fleet.Infrastructure.Migrations
                 schema: "metadata",
                 table: "station_statuses",
                 column: "code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_station_statuses_status_name",
+                schema: "metadata",
+                table: "station_statuses",
+                column: "status_name",
                 unique: true);
 
             migrationBuilder.CreateIndex(

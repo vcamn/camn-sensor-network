@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Fleet.Infrastructure.Migrations
 {
     [DbContext(typeof(FleetDbContext))]
-    [Migration("20260331174835_SeedConfigurableStatuses")]
-    partial class SeedConfigurableStatuses
+    [Migration("20260331234733_InitialMetadata")]
+    partial class InitialMetadata
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,7 @@ namespace Fleet.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "citext");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Fleet.Domain.Entities.Device", b =>
@@ -109,7 +110,7 @@ namespace Fleet.Infrastructure.Migrations
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(16)
-                        .HasColumnType("character varying(16)")
+                        .HasColumnType("citext")
                         .HasColumnName("code");
 
                     b.Property<string>("Description")
@@ -124,7 +125,7 @@ namespace Fleet.Infrastructure.Migrations
                     b.Property<string>("StatusName")
                         .IsRequired()
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("citext")
                         .HasColumnName("status_name");
 
                     b.HasKey("Id")
@@ -133,6 +134,10 @@ namespace Fleet.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("ix_device_statuses_code");
+
+                    b.HasIndex("StatusName")
+                        .IsUnique()
+                        .HasDatabaseName("ix_device_statuses_status_name");
 
                     b.ToTable("device_statuses", "metadata");
                 });
@@ -387,7 +392,7 @@ namespace Fleet.Infrastructure.Migrations
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(16)
-                        .HasColumnType("character varying(16)")
+                        .HasColumnType("citext")
                         .HasColumnName("code");
 
                     b.Property<string>("Description")
@@ -402,7 +407,7 @@ namespace Fleet.Infrastructure.Migrations
                     b.Property<string>("StatusName")
                         .IsRequired()
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("citext")
                         .HasColumnName("status_name");
 
                     b.HasKey("Id")
@@ -411,6 +416,10 @@ namespace Fleet.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("ix_sensor_statuses_code");
+
+                    b.HasIndex("StatusName")
+                        .IsUnique()
+                        .HasDatabaseName("ix_sensor_statuses_status_name");
 
                     b.ToTable("sensor_statuses", "metadata");
                 });
@@ -571,7 +580,7 @@ namespace Fleet.Infrastructure.Migrations
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(16)
-                        .HasColumnType("character varying(16)")
+                        .HasColumnType("citext")
                         .HasColumnName("code");
 
                     b.Property<string>("Description")
@@ -586,7 +595,7 @@ namespace Fleet.Infrastructure.Migrations
                     b.Property<string>("StatusName")
                         .IsRequired()
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("citext")
                         .HasColumnName("status_name");
 
                     b.HasKey("Id")
@@ -595,6 +604,10 @@ namespace Fleet.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("ix_site_statuses_code");
+
+                    b.HasIndex("StatusName")
+                        .IsUnique()
+                        .HasDatabaseName("ix_site_statuses_status_name");
 
                     b.ToTable("site_statuses", "metadata");
                 });
@@ -657,7 +670,7 @@ namespace Fleet.Infrastructure.Migrations
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(16)
-                        .HasColumnType("character varying(16)")
+                        .HasColumnType("citext")
                         .HasColumnName("code");
 
                     b.Property<string>("Description")
@@ -672,7 +685,7 @@ namespace Fleet.Infrastructure.Migrations
                     b.Property<string>("StatusName")
                         .IsRequired()
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("citext")
                         .HasColumnName("status_name");
 
                     b.HasKey("Id")
@@ -681,6 +694,10 @@ namespace Fleet.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("ix_station_statuses_code");
+
+                    b.HasIndex("StatusName")
+                        .IsUnique()
+                        .HasDatabaseName("ix_station_statuses_status_name");
 
                     b.ToTable("station_statuses", "metadata");
                 });

@@ -10,6 +10,7 @@ END $$;
 -- 2. Enable extensions and schemas 
 -- (Note: \c is handled in the bash script now for reliability)
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS citext;
 CREATE SCHEMA IF NOT EXISTS metadata AUTHORIZATION ${CAMN_APP_USER};
 CREATE SCHEMA IF NOT EXISTS admin AUTHORIZATION ${CAMN_APP_USER};
 
