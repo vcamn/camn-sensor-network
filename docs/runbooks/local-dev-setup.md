@@ -52,6 +52,7 @@ CAMN_DB_NAME=camn_sensor_network
 CAMN_APP_USER=camn_app
 CAMN_APP_PASSWORD=<local dev password>
 ```
+
 ### 4. One-Command Dev Workflow
 
 All local setup and operations are managed through:
@@ -69,6 +70,15 @@ This will:
 1. Start PostgreSQL via Docker
 2. Initialize database, roles, and schema
 2. Apply EF Core migrations
+
+### Database Requirements
+
+The following extensions must be installed before applying EF migrations:
+
+- uuid-ossp
+- citext
+
+And should be located in the init SQL script(s)
 
 ### 6. Daily Development Commands
 
