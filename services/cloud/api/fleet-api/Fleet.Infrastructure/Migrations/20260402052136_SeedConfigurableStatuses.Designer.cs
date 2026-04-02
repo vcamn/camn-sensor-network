@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Fleet.Infrastructure.Migrations
 {
     [DbContext(typeof(FleetDbContext))]
-    [Migration("20260401013815_SeedSystemStatuses")]
-    partial class SeedSystemStatuses
+    [Migration("20260402052136_SeedConfigurableStatuses")]
+    partial class SeedConfigurableStatuses
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

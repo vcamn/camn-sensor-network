@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Fleet.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMetadata : Migration
+    public partial class InitialMetadataSchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
