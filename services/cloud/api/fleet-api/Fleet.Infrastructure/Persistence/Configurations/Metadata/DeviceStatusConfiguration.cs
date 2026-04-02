@@ -13,9 +13,21 @@ public class DeviceStatusConfiguration : IEntityTypeConfiguration<DeviceStatus>
 
         builder.HasKey(e => e.Id);
 
+        builder.Property(e => e.Code)
+            .IsRequired()
+            .HasColumnType("citext")
+            .HasMaxLength(16);
+
+        builder.HasIndex(e => e.Code)
+            .IsUnique();
+
         builder.Property(e => e.StatusName)
             .IsRequired()
+            .HasColumnType("citext")
             .HasMaxLength(32);
+
+        builder.HasIndex(e => e.StatusName)
+            .IsUnique();
 
         builder.Property(e => e.Description)
             .HasMaxLength(64);

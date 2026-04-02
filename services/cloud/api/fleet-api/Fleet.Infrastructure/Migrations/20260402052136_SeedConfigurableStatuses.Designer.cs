@@ -3,6 +3,7 @@ using System;
 using Fleet.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Fleet.Infrastructure.Migrations
 {
     [DbContext(typeof(FleetDbContext))]
-    partial class FleetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260402052136_SeedConfigurableStatuses")]
+    partial class SeedConfigurableStatuses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
