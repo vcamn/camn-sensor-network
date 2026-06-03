@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "ms-ossdata.vscode-pgsql",
+        "ms-azuretools.vscode-containers",
+        "heaths.vscode-guid",
+        "humao.rest-client"
+    ]
+}
