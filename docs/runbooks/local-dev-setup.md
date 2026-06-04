@@ -18,6 +18,7 @@ Ensure the following are installed:
 - Git
 - Docker Desktop (or Docker Engine + Docker Compose)
 - .NET SDK (v8 or later)
+- .NET Entity Framework Core CLI tools (dotnet-ef)
 - Node.js (only required for future web UI work)
 - WSL (Windows users)
 
@@ -25,6 +26,7 @@ Ensure the following are installed:
 ```
 docker --version
 dotnet --version
+dotnet-ef --version
 git --version
 ```
 ### 3. Repository Setup
@@ -51,6 +53,22 @@ POSTGRES_PASSWORD=postgres
 CAMN_DB_NAME=camn_sensor_network
 CAMN_APP_USER=camn_app
 CAMN_APP_PASSWORD=<local dev password>
+```
+#### 3.3 Make a copy of the ASP .NET Core appsettings.json for your target environment
+
+Example: ```appsettings.Development.json``` (note: Linux/MacOS are case-sensitive)
+```json
+{
+  "ConnectionStrings": {
+    "FleetDb": "Host=localhost;Port=5433;Database=camn_sensor_network;Username=<username>;Password=<local_dev_password>"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
 ```
 
 ### 4. One-Command Dev Workflow
