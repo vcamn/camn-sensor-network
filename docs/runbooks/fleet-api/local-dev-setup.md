@@ -1,4 +1,25 @@
-# Local Development Setup Runbook
+# Fleet API Local Development Setup Runbook
+```text
+services/cloud/api/
+
+Fleet.Api              (ASP.NET Core Web API)
+Fleet.Domain           (entities, enums, domain rules)
+Fleet.Infrastructure   (EF Core, DbContext, repositories, migrations)
+```
+### How the Projects Reference Each Other
+Dependency direction stays clean:
+```text
+Fleet.Api
+    ↓
+Fleet.Infrastructure
+    ↓
+Fleet.Domain
+```
+```Fleet.Infrastructure``` references ```Fleet.Domain``` for entity models.
+
+```Fleet.Api``` references ```Fleet.Infrastructure``` to use the DbContext.
+
+---
 
 ### 1. Overview
 This runbook provides step-by-step instructions for setting up a *local development environment* for the CAMN Sensor Network.
@@ -21,6 +42,31 @@ Ensure the following are installed:
 - .NET Entity Framework Core CLI tools (dotnet-ef)
 - Node.js (only required for future web UI work)
 - WSL (Windows users)
+
+### Install .NET SDK & .NET Entity Framework Core CLI tools
+.NET SDK
+```bash
+sudo apt-get install -y dotnet-sdk-10.0
+```
+
+.NET Entity Framework Core CLI tools
+```bash
+dotnet tool install --global dotnet-ef
+```
+
+Installed packages in Fleet.Api:
+```bash
+Microsoft.EntityFrameworkCore.Design
+```
+
+Installed packages in Fleet.Infrastructure:
+```bash
+EntityFrameworkCore
+Microsoft.EntityFrameworkCore.Design
+Microsoft.EntityFrameworkCore.Tools
+Npgsql.EntityFrameworkCore.PostgreSQL
+EFCore.NamingConvention
+```
 
 ### Verify Installations
 ```
