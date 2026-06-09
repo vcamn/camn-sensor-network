@@ -56,8 +56,24 @@ dotnet tool install --global dotnet-ef
 
 Installed packages in Fleet.Api:
 ```bash
+# For Entity Framework Core design-time features (scaffolding, Migration code generation, etc.)
 Microsoft.EntityFrameworkCore.Design
+
+# ---For VS Code specific tools and packages to scaffold controllers---
+
+# Install the scaffolding engine globally (if you haven't already)
+dotnet tool install --global dotnet-aspnet-codegenerator
+
+# Add required NuGet packages to your Web API project
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 ```
+
+Run the dotnet aspnet-codegenerator command to automatically generate a RESTful, CRUD-ready API controller:
+```bash
+dotnet aspnet-codegenerator controller -name ExamplesController -async -api -m MyWebApi.Models.Example -dc MyWebApi.Data.AppDbContext -outDir Controllers
+```
+
+**Note**: As of 6/09/2026 the API Development has moved to Visual Studio 2026
 
 Installed packages in Fleet.Infrastructure:
 ```bash
