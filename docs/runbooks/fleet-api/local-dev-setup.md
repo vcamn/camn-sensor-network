@@ -223,7 +223,7 @@ dev.sh up
 # Make code changes
 # Update EF models
 
-# Create migration
+# Create migration. Run this command from the directory containing the solution file (Fleet.sln[x])
 dotnet ef migrations add <MigrationName> \
   --project Fleet.Infrastructure \
   --startup-project Fleet.Api
