@@ -13,10 +13,10 @@ namespace Fleet.Domain.Entities
         public Guid? DeviceId { get; set; }
 
         public Guid SensorStatusId { get; set; }
-        
+
+        public Guid MeasurementUnitId { get; set; }
+
         public string SensorIdentifier { get; set; }
-        
-        public string UnitOfMeasure { get; set; }
 
         public DateTime? CalibrationDate { get; set; }
 
@@ -31,6 +31,8 @@ namespace Fleet.Domain.Entities
         public Station Station { get; set; }
 
         public Device? Device { get; set; }
+        
+        public MeasurementUnit MeasurementUnit { get; set; }
 
         public ICollection<SensorIntegration> SensorIntegrations { get; set; } = [];
 
