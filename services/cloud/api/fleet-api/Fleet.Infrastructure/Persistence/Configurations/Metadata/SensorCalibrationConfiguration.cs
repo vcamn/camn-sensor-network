@@ -24,6 +24,9 @@ public class SensorCalibrationConfiguration : IEntityTypeConfiguration<SensorCal
         builder.Property(e => e.CreatedAtUtc)
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+        builder.Property(e => e.UpdatedAtUtc)
+               .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
         builder.HasOne(e => e.Sensor)
             .WithMany(s => s.SensorCalibrations)
             .HasForeignKey(e => e.SensorId)

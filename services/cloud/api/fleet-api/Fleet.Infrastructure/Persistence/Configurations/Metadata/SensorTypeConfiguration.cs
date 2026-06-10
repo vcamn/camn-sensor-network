@@ -20,5 +20,8 @@ public class SensorTypeConfiguration : IEntityTypeConfiguration<SensorType>
 
         builder.Property(e => e.CreatedAtUtc)
                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+        builder.Property(e => e.UpdatedAtUtc)
+               .HasDefaultValueSql("CURRENT_TIMESTAMP");
     }
 }

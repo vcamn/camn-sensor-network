@@ -23,6 +23,9 @@ public class IntegrationTemplateConfiguration : IEntityTypeConfiguration<Integra
         builder.Property(e => e.CreatedAtUtc)
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+        builder.Property(e => e.UpdatedAtUtc)
+               .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
         builder.HasOne(e => e.IntegrationType)
             .WithMany(it => it.IntegrationTemplates)
             .HasForeignKey(e => e.IntegrationTypeId)

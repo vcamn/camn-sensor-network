@@ -9,30 +9,33 @@ public class SensorIntegrationConfiguration : IEntityTypeConfiguration<SensorInt
 {
     public void Configure(EntityTypeBuilder<SensorIntegration> builder)
     {
-       builder.ToTable("sensor_integrations");
+        builder.ToTable("sensor_integrations");
 
-       builder.HasKey(e => e.Id);
+        builder.HasKey(e => e.Id);
 
-       builder.Property(e => e.ConfigJson)
-              .IsRequired()
-              .HasColumnType("jsonb");
+        builder.Property(e => e.ConfigJson)
+               .IsRequired()
+               .HasColumnType("jsonb");
 
-       builder.Property(e => e.CreatedAtUtc)
-              .HasDefaultValueSql("CURRENT_TIMESTAMP");
+        builder.Property(e => e.CreatedAtUtc)
+               .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-       builder.HasOne(e => e.Sensor)
+        builder.Property(e => e.UpdatedAtUtc)
+               .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+        builder.HasOne(e => e.Sensor)
               .WithMany(s => s.SensorIntegrations)
               .HasForeignKey(e => e.SensorId)
               .OnDelete(DeleteBehavior.NoAction);
 
-       builder.HasOne(e => e.IntegrationType)
-              .WithMany(t => t.SensorIntegrations)
-              .HasForeignKey(e => e.IntegrationTypeId)
-              .OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(e => e.IntegrationType)
+               .WithMany(t => t.SensorIntegrations)
+               .HasForeignKey(e => e.IntegrationTypeId)
+               .OnDelete(DeleteBehavior.NoAction);
 
-       builder.HasOne(e => e.IntegrationTemplate)
-              .WithMany(t => t.SensorIntegrations)
-              .HasForeignKey(e => e.IntegrationTemplateId)
-              .OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(e => e.IntegrationTemplate)
+               .WithMany(t => t.SensorIntegrations)
+               .HasForeignKey(e => e.IntegrationTemplateId)
+               .OnDelete(DeleteBehavior.NoAction);
     }
 }

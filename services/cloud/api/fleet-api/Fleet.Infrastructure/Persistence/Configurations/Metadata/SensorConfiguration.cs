@@ -23,6 +23,9 @@ public class SensorConfiguration : IEntityTypeConfiguration<Sensor>
         builder.Property(e => e.CreatedAtUtc)
               .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+        builder.Property(e => e.UpdatedAtUtc)
+               .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
         builder.HasOne(e => e.Status)
                .WithMany(s => s.Sensors)
                .HasForeignKey(e => e.SensorStatusId)
