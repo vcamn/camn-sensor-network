@@ -1,3 +1,4 @@
+using Fleet.Api.DTOs.Common;
 using Fleet.Domain.Entities;
 using Fleet.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +13,23 @@ public class SiteStatusController(FleetDbContext context) : ControllerBase
 
     // GET: api/SiteStatus
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SiteStatus>>> GetSiteStatuses()
+    public async Task<ActionResult<IEnumerable<SystemStatusDto>>> GetSiteStatuses()
     {
-        return await context.SiteStatuses.ToListAsync();
+        var siteStatuses = await context.SiteStatuses.Select(s => new SystemStatusDto
+        {
+            Id = s.Id,
+            Code = s.Code,
+            StatusName = s.StatusName,
+            Description = s.Description,
+            DisplayOrder = s.DisplayOrder
+        }).ToListAsync();
+
+        return Ok(siteStatuses);
     }
 
     // GET: api/SiteStatus/5
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<SiteStatus>> GetSiteStatus(Guid id)
+    public async Task<ActionResult<SystemStatusDto>> GetSiteStatus(Guid id)
     {
         var siteStatus = await context.SiteStatuses.FindAsync(id);
 
@@ -28,21 +38,45 @@ public class SiteStatusController(FleetDbContext context) : ControllerBase
             return NotFound();
         }
 
-        return siteStatus;
+        var siteStatusDto = new SystemStatusDto
+        {
+            Id = siteStatus.Id,
+            Code = siteStatus.Code,
+            StatusName = siteStatus.StatusName,
+            Description = siteStatus.Description,
+            DisplayOrder = siteStatus.DisplayOrder
+        };
+
+        return Ok(siteStatusDto);
     }
 
     // PUT: api/SiteStatus/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutSiteStatus(Guid id, SiteStatus siteStatus)
+    public async Task<IActionResult> PutSiteStatus(Guid id, SystemStatusDto siteStatusDto)
     {
-        if (id != siteStatus.Id)
+        if (id != siteStatusDto.Id)
         {
             return BadRequest();
         }
 
+        // Check if the record exists before updating
+        var siteStatus = await context.SiteStatuses.FindAsync(id);
+        if (siteStatus == null)
+        {
+            return NotFound();
+        }
+
+        // Update the existing entity with the new values
+        siteStatus.Code = siteStatusDto.Code;
+        siteStatus.StatusName = siteStatusDto.StatusName;
+        siteStatus.Description = siteStatusDto.Description;
+        siteStatus.DisplayOrder = siteStatusDto.DisplayOrder;
+
+        // Mark the entity as modified
         context.Entry(siteStatus).State = EntityState.Modified;
 
+        // Save changes with concurrency handling
         try
         {
             await context.SaveChangesAsync();
@@ -65,8 +99,24 @@ public class SiteStatusController(FleetDbContext context) : ControllerBase
     // POST: api/SiteStatus
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<SiteStatus>> PostSiteStatus(SiteStatus siteStatus)
+    public async Task<ActionResult<SiteStatus>> PostSiteStatus(SystemStatusDto siteStatusDto)
     {
+        // TODO: Check if a record with the same ID already exists
+        var siteStatusExists = await context.SiteStatuses.FindAsync(siteStatusDto.Id);
+        if (siteStatusExists != null)
+        {
+            return Conflict($"A SiteStatus with ID {siteStatusDto.Id} already exists.");
+        }
+
+        var siteStatus = new SiteStatus
+        {
+            Id = siteStatusDto.Id,
+            Code = siteStatusDto.Code,
+            StatusName = siteStatusDto.StatusName,
+            Description = siteStatusDto.Description,
+            DisplayOrder = siteStatusDto.DisplayOrder
+        };
+
         context.SiteStatuses.Add(siteStatus);
         await context.SaveChangesAsync();
 

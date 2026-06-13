@@ -22,6 +22,7 @@ builder.Services.AddDbContext<FleetDbContext>(options =>
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+        // Handle circular references gracefully by ignoring them during serialization
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
