@@ -1,6 +1,41 @@
-@Fleet.Api_HostAddress = http://localhost:5247
+@Fleet.Api_HostAddress = https://localhost:7110
 
-GET {{Fleet.Api_HostAddress}}/weatherforecast/
+@id=eec169c3-421b-4561-beb6-a2303e96453d
+GET {{Fleet.Api_HostAddress}}/api/sitestatus
+
+###
+
+POST {{Fleet.Api_HostAddress}}/api/sitestatus
+Content-Type: application/json
+
+{
+  "id": "eec169c3-421b-4561-beb6-a2303e96453d",
+  "code": "TEST",
+  "statusName": "Test",
+  "description": "Test status for development and debugging purposes",
+  "displayOrder": 99
+}
+
+###
+
+GET {{Fleet.Api_HostAddress}}/api/sitestatus/{{id}}
 Accept: application/json
+
+###
+
+PUT {{Fleet.Api_HostAddress}}/api/sitestatus/{{id}}
+Content-Type: application/json
+
+{
+  "id": "eec169c3-421b-4561-beb6-a2303e96453d",
+  "code": "TESTSTATUS",
+  "statusName": "Test Status",
+  "description": "Test status for development and debugging purposes",
+  "displayOrder": 100
+}
+
+###
+
+DELETE {{Fleet.Api_HostAddress}}/api/sitestatus/{{id}}
 
 ###
