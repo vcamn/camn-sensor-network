@@ -54,7 +54,7 @@ sudo apt-get install -y dotnet-sdk-10.0
 dotnet tool install --global dotnet-ef
 ```
 
-Installed packages in Fleet.Api:
+#### Installed packages in Fleet.Api:
 ```bash
 # For Entity Framework Core design-time features (scaffolding, Migration code generation, etc.)
 Microsoft.EntityFrameworkCore.Design
@@ -68,14 +68,21 @@ dotnet tool install --global dotnet-aspnet-codegenerator
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 ```
 
-Run the dotnet aspnet-codegenerator command to automatically generate a RESTful, CRUD-ready API controller:
+#### Run the dotnet aspnet-codegenerator command to automatically generate a RESTful, CRUD-ready API controller:
 ```bash
-dotnet aspnet-codegenerator controller -name ExamplesController -async -api -m MyWebApi.Models.Example -dc MyWebApi.Data.AppDbContext -outDir Controllers
+dotnet aspnet-codegenerator controller \
+-name ExamplesController \
+-async \
+-api \
+-m MyWebApi.Models.Example \
+-dc MyWebApi.Data.AppDbContext \
+-dbProvider postgres \
+-outDir Controllers
 ```
 
-**Note**: As of 6/09/2026 the API Development has moved to Visual Studio 2026
+**Note**: For the -m and -dc parameters, it's best to fully qualify the namespaces to be on the safer side. As of 6/09/2026 the API Development has moved to Visual Studio 2026.
 
-Installed packages in Fleet.Infrastructure:
+#### Installed packages in Fleet.Infrastructure:
 ```bash
 EntityFrameworkCore
 Microsoft.EntityFrameworkCore.Design
