@@ -1,0 +1,53 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+# An http-client.env.json should be created in the root directory of the project. 
+# Select the environment in the upper right corner of this file.
+
+# File level variables
+@ApiVersion = v1
+@RequestedBy = Fleet.Api.Tests
+@id=eec169c3-421b-4561-beb6-a2303e96453d
+
+
+### Get All Site Statuses
+GET {{HostAddress}}/api/sitestatus
+
+###
+
+### Get Site Status by ID
+GET {{HostAddress}}/api/sitestatus/{{id}}
+Accept: application/json
+
+###
+
+### Create a new Site Status
+POST {{HostAddress}}/api/sitestatus
+Content-Type: application/json
+
+{
+  "id": "eec169c3-421b-4561-beb6-a2303e96453d",
+  "code": "TEST",
+  "statusName": "Test",
+  "description": "Test status for development and debugging purposes",
+  "displayOrder": 99
+}
+
+###
+
+### Update an existing Site Status
+PUT {{HostAddress}}/api/sitestatus/{{id}}
+Content-Type: application/json
+
+{
+  "id": "eec169c3-421b-4561-beb6-a2303e96453d",
+  "code": "TESTSTATUS",
+  "statusName": "Test Status",
+  "description": "Test status for development and debugging purposes",
+  "displayOrder": 100
+}
+
+###
+
+### Delete a Site Status
+DELETE {{HostAddress}}/api/sitestatus/{{id}}
+
+###
