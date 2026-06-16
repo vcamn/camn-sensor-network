@@ -9,18 +9,18 @@
 
 
 ### Get All Site Statuses
-GET {{HostAddress}}/api/sitestatus
+GET {{HostAddress}}/api/sitestatuses
 
 ###
 
 ### Get Site Status by ID
-GET {{HostAddress}}/api/sitestatus/{{id}}
+GET {{HostAddress}}/api/sitestatuses/{{id}}
 Accept: application/json
 
 ###
 
 ### Create a new Site Status
-POST {{HostAddress}}/api/sitestatus
+POST {{HostAddress}}/api/sitestatuses
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
 ###
 
 ### Update an existing Site Status
-PUT {{HostAddress}}/api/sitestatus/{{id}}
+PUT {{HostAddress}}/api/sitestatuses/{{id}}
 Content-Type: application/json
 
 {
@@ -48,6 +48,6 @@ Content-Type: application/json
 ###
 
 ### Delete a Site Status
-DELETE {{HostAddress}}/api/sitestatus/{{id}}
+DELETE {{HostAddress}}/api/sitestatuses/{{id}}
 
 ###

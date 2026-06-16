@@ -6,10 +6,10 @@ namespace Fleet.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class StationStatusController(IStationStatusService stationStatusService) : ControllerBase
+public class StationStatusesController(IStationStatusService stationStatusService) : ControllerBase
 {
 
-    // GET: api/StationStatus
+    // GET: api/StationStatuses
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SystemStatusDto>>> GetStationStatuses()
     {
@@ -17,7 +17,7 @@ public class StationStatusController(IStationStatusService stationStatusService)
         return Ok(stationStatuses);
     }
 
-    // GET: api/StationStatus/5
+    // GET: api/StationStatuses/5
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<SystemStatusDto>> GetStationStatus(Guid id)
     {
@@ -30,7 +30,7 @@ public class StationStatusController(IStationStatusService stationStatusService)
         return Ok(stationStatusDto);
     }
 
-    // PUT: api/StationStatus/5
+    // PUT: api/StationStatuses/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutStationStatus(Guid id, SystemStatusDto stationStatusDto)
@@ -52,7 +52,7 @@ public class StationStatusController(IStationStatusService stationStatusService)
         return NoContent();
     }
 
-    // POST: api/StationStatus
+    // POST: api/StationStatuses
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<SystemStatusDto>> PostStationStatus(SystemStatusDto stationStatusDto)
@@ -64,10 +64,10 @@ public class StationStatusController(IStationStatusService stationStatusService)
 
         var created = await stationStatusService.CreateStatusAsync(stationStatusDto);
 
-        return CreatedAtAction("GetStationStatus", new { id = created.Id }, created);
+        return CreatedAtAction(nameof(GetStationStatus), new { id = created.Id }, created);
     }
 
-    // DELETE: api/StationStatus/5
+    // DELETE: api/StationStatuses/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteStationStatus(Guid id)
     {

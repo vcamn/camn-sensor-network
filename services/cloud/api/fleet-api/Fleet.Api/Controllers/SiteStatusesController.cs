@@ -7,10 +7,10 @@ namespace Fleet.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class SiteStatusController(ISiteStatusService siteStatusService) : ControllerBase
+public class SiteStatusesController(ISiteStatusService siteStatusService) : ControllerBase
 {
 
-    // GET: api/SiteStatus
+    // GET: api/SiteStatuses
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SystemStatusDto>>> GetSiteStatuses()
     {
@@ -18,7 +18,7 @@ public class SiteStatusController(ISiteStatusService siteStatusService) : Contro
         return Ok(siteStatuses);
     }
 
-    // GET: api/SiteStatus/5
+    // GET: api/SiteStatuses/5
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<SystemStatusDto>> GetSiteStatus(Guid id)
     {
@@ -31,7 +31,7 @@ public class SiteStatusController(ISiteStatusService siteStatusService) : Contro
         return Ok(siteStatusDto);
     }
 
-    // PUT: api/SiteStatus/5
+    // PUT: api/SiteStatuses/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutSiteStatus(Guid id, SystemStatusDto siteStatusDto)
@@ -54,7 +54,7 @@ public class SiteStatusController(ISiteStatusService siteStatusService) : Contro
         return NoContent();
     }
 
-    // POST: api/SiteStatus
+    // POST: api/SiteStatuses
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<SiteStatus>> PostSiteStatus(SystemStatusDto siteStatusDto)
@@ -66,10 +66,10 @@ public class SiteStatusController(ISiteStatusService siteStatusService) : Contro
 
         var created = await siteStatusService.CreateStatusAsync(siteStatusDto);
 
-        return CreatedAtAction("GetSiteStatus", new { id = created.Id }, created);
+        return CreatedAtAction(nameof(GetSiteStatus), new { id = created.Id }, created);
     }
 
-    // DELETE: api/SiteStatus/5
+    // DELETE: api/SiteStatuses/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSiteStatus(Guid id)
     {
