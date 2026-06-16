@@ -27,7 +27,7 @@ Content-Type: application/json
   "id": "eec169c3-421b-4561-beb6-a2303e96453d",
   "code": "TEST",
   "statusName": "Test",
-  "description": "Test status for development and debugging purposes",
+  "description": "Test site status for development and debugging purposes",
   "displayOrder": 99
 }
 
@@ -40,8 +40,8 @@ Content-Type: application/json
 {
   "id": "eec169c3-421b-4561-beb6-a2303e96453d",
   "code": "TESTSTATUS",
-  "statusName": "Test Status",
-  "description": "Test status for development and debugging purposes",
+  "statusName": "Test Site Status",
+  "description": "Test site status for development and debugging purposes",
   "displayOrder": 100
 }
 

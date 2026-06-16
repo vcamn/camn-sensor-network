@@ -12,7 +12,7 @@ public class SiteStatusController(ISiteStatusService siteStatusService) : Contro
 
     // GET: api/SiteStatus
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SystemStatusDto>>> GetStatuses()
+    public async Task<ActionResult<IEnumerable<SystemStatusDto>>> GetSiteStatuses()
     {
         var siteStatuses =  await siteStatusService.GetStatusesAsync();
         return Ok(siteStatuses);
@@ -20,7 +20,7 @@ public class SiteStatusController(ISiteStatusService siteStatusService) : Contro
 
     // GET: api/SiteStatus/5
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<SystemStatusDto>> GetStatus(Guid id)
+    public async Task<ActionResult<SystemStatusDto>> GetSiteStatus(Guid id)
     {
         var siteStatusDto = await siteStatusService.GetStatusAsync(id);
         if (siteStatusDto == null)
@@ -41,14 +41,15 @@ public class SiteStatusController(ISiteStatusService siteStatusService) : Contro
             return BadRequest();
         }
 
-        // Check if the record exists before updating
-        if (! await siteStatusService.StatusExistsAsync(id))
+        try
+        {
+            // Update the existing entity with the new values
+            await siteStatusService.UpdateStatusAsync(id, siteStatusDto);
+        }
+        catch (KeyNotFoundException)
         {
             return NotFound();
         }
-
-        // Update the existing entity with the new values
-        await siteStatusService.UpdateStatusAsync(id, siteStatusDto);
 
         return NoContent();
     }
@@ -63,21 +64,24 @@ public class SiteStatusController(ISiteStatusService siteStatusService) : Contro
             return Conflict($"A SiteStatus with ID {siteStatusDto.Id} already exists.");
         }
 
-        var newSiteStatus = await siteStatusService.CreateStatusAsync(siteStatusDto);
+        var created = await siteStatusService.CreateStatusAsync(siteStatusDto);
 
-        return CreatedAtAction("GetStatus", new { id = newSiteStatus.Id }, newSiteStatus);
+        return CreatedAtAction("GetSiteStatus", new { id = created.Id }, created);
     }
 
     // DELETE: api/SiteStatus/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteStatus(Guid id)
+    public async Task<IActionResult> DeleteSiteStatus(Guid id)
     {
-        if (!await siteStatusService.StatusExistsAsync(id))
+        try
+        {
+            await siteStatusService.DeleteStatusAsync(id);
+
+        }
+        catch (KeyNotFoundException)
         {
             return NotFound();
         }
-
-        await siteStatusService.DeleteStatusAsync(id);
 
         return NoContent();
     }
