@@ -1,8 +1,9 @@
+using Fleet.Api.Contracts;
+using Fleet.Api.Services;
 using Fleet.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 // Add services to the container.
 builder.Services.AddDbContext<FleetDbContext>(options =>
@@ -18,6 +19,9 @@ builder.Services.AddDbContext<FleetDbContext>(options =>
     )
     .UseSnakeCaseNamingConvention();
 });
+
+builder.Services.AddScoped<ISiteStatusService, SiteStatusService>();
+builder.Services.AddScoped<IStationStatusService, StationStatusService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

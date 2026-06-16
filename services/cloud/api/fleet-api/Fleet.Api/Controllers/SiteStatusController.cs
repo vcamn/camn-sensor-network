@@ -1,51 +1,32 @@
+using Fleet.Api.Contracts;
 using Fleet.Api.DTOs.Common;
 using Fleet.Domain.Entities;
-using Fleet.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Fleet.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class SiteStatusController(FleetDbContext context) : ControllerBase
+public class SiteStatusController(ISiteStatusService siteStatusService) : ControllerBase
 {
 
     // GET: api/SiteStatus
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SystemStatusDto>>> GetSiteStatuses()
+    public async Task<ActionResult<IEnumerable<SystemStatusDto>>> GetStatuses()
     {
-        var siteStatuses = await context.SiteStatuses.Select(s => new SystemStatusDto
-        {
-            Id = s.Id,
-            Code = s.Code,
-            StatusName = s.StatusName,
-            Description = s.Description,
-            DisplayOrder = s.DisplayOrder
-        }).ToListAsync();
-
+        var siteStatuses =  await siteStatusService.GetStatusesAsync();
         return Ok(siteStatuses);
     }
 
     // GET: api/SiteStatus/5
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<SystemStatusDto>> GetSiteStatus(Guid id)
+    public async Task<ActionResult<SystemStatusDto>> GetStatus(Guid id)
     {
-        var siteStatus = await context.SiteStatuses.FindAsync(id);
-
-        if (siteStatus == null)
+        var siteStatusDto = await siteStatusService.GetStatusAsync(id);
+        if (siteStatusDto == null)
         {
             return NotFound();
         }
-
-        var siteStatusDto = new SystemStatusDto
-        {
-            Id = siteStatus.Id,
-            Code = siteStatus.Code,
-            StatusName = siteStatus.StatusName,
-            Description = siteStatus.Description,
-            DisplayOrder = siteStatus.DisplayOrder
-        };
 
         return Ok(siteStatusDto);
     }
@@ -61,37 +42,13 @@ public class SiteStatusController(FleetDbContext context) : ControllerBase
         }
 
         // Check if the record exists before updating
-        var siteStatus = await context.SiteStatuses.FindAsync(id);
-        if (siteStatus == null)
+        if (! await siteStatusService.StatusExistsAsync(id))
         {
             return NotFound();
         }
 
         // Update the existing entity with the new values
-        siteStatus.Code = siteStatusDto.Code;
-        siteStatus.StatusName = siteStatusDto.StatusName;
-        siteStatus.Description = siteStatusDto.Description;
-        siteStatus.DisplayOrder = siteStatusDto.DisplayOrder;
-
-        // Mark the entity as modified
-        context.Entry(siteStatus).State = EntityState.Modified;
-
-        // Save changes with concurrency handling
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (! await SiteStatusExistsAsync(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
+        await siteStatusService.UpdateStatusAsync(id, siteStatusDto);
 
         return NoContent();
     }
@@ -101,46 +58,27 @@ public class SiteStatusController(FleetDbContext context) : ControllerBase
     [HttpPost]
     public async Task<ActionResult<SiteStatus>> PostSiteStatus(SystemStatusDto siteStatusDto)
     {
-        // TODO: Check if a record with the same ID already exists
-        var siteStatusExists = await context.SiteStatuses.FindAsync(siteStatusDto.Id);
-        if (siteStatusExists != null)
+        if (await siteStatusService.StatusExistsAsync(siteStatusDto.Id))
         {
             return Conflict($"A SiteStatus with ID {siteStatusDto.Id} already exists.");
         }
 
-        var siteStatus = new SiteStatus
-        {
-            Id = siteStatusDto.Id,
-            Code = siteStatusDto.Code,
-            StatusName = siteStatusDto.StatusName,
-            Description = siteStatusDto.Description,
-            DisplayOrder = siteStatusDto.DisplayOrder
-        };
+        var newSiteStatus = await siteStatusService.CreateStatusAsync(siteStatusDto);
 
-        context.SiteStatuses.Add(siteStatus);
-        await context.SaveChangesAsync();
-
-        return CreatedAtAction("GetSiteStatus", new { id = siteStatus.Id }, siteStatus);
+        return CreatedAtAction("GetStatus", new { id = newSiteStatus.Id }, newSiteStatus);
     }
 
     // DELETE: api/SiteStatus/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteSiteStatus(Guid id)
+    public async Task<IActionResult> DeleteStatus(Guid id)
     {
-        var siteStatus = await context.SiteStatuses.FindAsync(id);
-        if (siteStatus == null)
+        if (!await siteStatusService.StatusExistsAsync(id))
         {
             return NotFound();
         }
 
-        context.SiteStatuses.Remove(siteStatus);
-        await context.SaveChangesAsync();
+        await siteStatusService.DeleteStatusAsync(id);
 
         return NoContent();
-    }
-
-    private async Task<bool> SiteStatusExistsAsync(Guid id)
-    {
-        return await context.SiteStatuses.AnyAsync(e => e.Id == id);
     }
 }
