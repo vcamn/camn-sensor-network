@@ -25,7 +25,7 @@ Content-Type: application/json
   "id": "9de48ee9-2a57-42a8-8bbd-681cf7a86dfb",
   "code": "TEST",
   "statusName": "Test",
-  "description": "Test status",
+  "description": "Test station status",
   "displayOrder": 99
 }
 
@@ -39,7 +39,7 @@ Content-Type: application/json
   "id": "9de48ee9-2a57-42a8-8bbd-681cf7a86dfb",
   "code": "TESTSTATUS",
   "statusName": "TestStatus",
-  "description": "Test status for local development",
+  "description": "Test station status for local development",
   "displayOrder": 100
 }
 
