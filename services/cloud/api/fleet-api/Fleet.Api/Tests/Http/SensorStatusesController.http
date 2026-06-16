@@ -1,0 +1,18 @@
+﻿# For more info on HTTP files go to https://aka.ms/vs/httpfile
+# An http-client.env.json should be created in the root directory of the project. 
+# Select the environment in the upper right corner of this file.
+
+# File level variables
+@ApiVersion = v1
+@RequestedBy = Fleet.Api.Tests
+@id = 804eb64f-db79-4945-8182-105f208ec543
+
+### Get All Sensor Statuses
+GET {{HostAddress}}/api/sensorstatuses
+
+###
+
+### Get Sensor Status by ID
+GET {{HostAddress}}/api/sensorstatuses/{{id}}
+
+###

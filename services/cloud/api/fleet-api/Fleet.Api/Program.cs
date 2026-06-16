@@ -22,6 +22,8 @@ builder.Services.AddDbContext<FleetDbContext>(options =>
 
 builder.Services.AddScoped<ISiteStatusService, SiteStatusService>();
 builder.Services.AddScoped<IStationStatusService, StationStatusService>();
+builder.Services.AddScoped<ISensorStatusService, SensorStatusService>();
+builder.Services.AddScoped<IDeviceStatusService, DeviceStatusService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
