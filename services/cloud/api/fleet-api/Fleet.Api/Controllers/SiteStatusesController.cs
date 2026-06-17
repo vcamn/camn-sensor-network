@@ -1,6 +1,5 @@
 using Fleet.Api.Contracts;
 using Fleet.Api.DTOs.Common;
-using Fleet.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fleet.Api.Controllers;
@@ -57,7 +56,7 @@ public class SiteStatusesController(ISiteStatusService siteStatusService) : Cont
     // POST: api/SiteStatuses
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<SiteStatus>> PostSiteStatus(SystemStatusDto siteStatusDto)
+    public async Task<ActionResult<SystemStatusDto>> PostSiteStatus(SystemStatusDto siteStatusDto)
     {
         if (await siteStatusService.StatusExistsAsync(siteStatusDto.Id))
         {

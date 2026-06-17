@@ -1,8 +1,6 @@
 using Fleet.Api.Contracts;
 using Fleet.Api.DTOs.Common;
-using Fleet.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Fleet.Api.Controllers;
 
@@ -35,7 +33,7 @@ public class DeviceStatusesController(IDeviceStatusService deviceStatusService) 
     [NonAction]
     [HttpPut("{id}")]
     [ApiExplorerSettings(IgnoreApi = true)]
-    public async Task<IActionResult> PutDeviceStatus(Guid id, DeviceStatus deviceStatus)
+    public async Task<IActionResult> PutDeviceStatus(Guid id, SystemStatusDto deviceStatusDto)
     {
         return Ok();
     }
@@ -44,7 +42,7 @@ public class DeviceStatusesController(IDeviceStatusService deviceStatusService) 
     [HttpPost]
     [NonAction]
     [ApiExplorerSettings(IgnoreApi = true)]
-    public async Task<ActionResult<DeviceStatus>> PostDeviceStatus(DeviceStatus deviceStatus)
+    public async Task<ActionResult<SystemStatusDto>> PostDeviceStatus(SystemStatusDto deviceStatusDto)
     {
         return Ok();
     }
