@@ -8,11 +8,11 @@
 @id = 1c4824e9-5570-472b-966f-73f8ff9e3adb
 
 ### Get All Device Statuses
-GET {{HostAddress}}/api/devicestatuses
+GET {{HostAddress}}/api/{{ApiVersion}}/devicestatuses
 
 ###
 
 ### Get Device Status by ID
-GET {{HostAddress}}/api/devicestatuses/{{id}}
+GET {{HostAddress}}/api/{{ApiVersion}}/devicestatuses/{{id}}
 
 ###

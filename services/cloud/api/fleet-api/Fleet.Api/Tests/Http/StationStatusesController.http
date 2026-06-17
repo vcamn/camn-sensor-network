@@ -8,17 +8,17 @@
 @id=9de48ee9-2a57-42a8-8bbd-681cf7a86dfb
 
 ### Get All Station Statuses
-GET {{HostAddress}}/api/stationstatuses
+GET {{HostAddress}}/api/{{ApiVersion}}/stationstatuses
 
 ###
 
 ### Get Station Status by ID
-GET {{HostAddress}}/api/stationstatuses/{{id}}
+GET {{HostAddress}}/api/{{ApiVersion}}/stationstatuses/{{id}}
 
 ###
 
 ### Create a new Station Status
-POST {{HostAddress}}/api/stationstatuses
+POST {{HostAddress}}/api/{{ApiVersion}}/stationstatuses
 Content-Type: application/json
 
 {
@@ -32,7 +32,7 @@ Content-Type: application/json
 ###
 
 ### Update an existing Station Status
-PUT {{HostAddress}}/api/stationstatuses/{{id}}
+PUT {{HostAddress}}/api/{{ApiVersion}}/stationstatuses/{{id}}
 Content-Type: application/json
 
 {
@@ -46,6 +46,6 @@ Content-Type: application/json
 ###
 
 ### Delete a Station Status
-DELETE {{HostAddress}}/api/stationstatuses/{{id}}
+DELETE {{HostAddress}}/api/{{ApiVersion}}/stationstatuses/{{id}}
 
 ###

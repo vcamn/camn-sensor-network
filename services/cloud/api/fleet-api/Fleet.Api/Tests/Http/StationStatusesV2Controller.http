@@ -1,0 +1,8 @@
+﻿### File level variables
+@ApiVersion = v2
+@RequestedBy = Fleet.Api.Tests
+
+
+GET {{HostAddress}}/api/{{ApiVersion}}/stationstatuses
+
+###

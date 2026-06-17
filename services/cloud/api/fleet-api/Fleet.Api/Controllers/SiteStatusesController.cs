@@ -1,11 +1,13 @@
+using Asp.Versioning;
 using Fleet.Api.Contracts;
 using Fleet.Api.DTOs.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fleet.Api.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class SiteStatusesController(ISiteStatusService siteStatusService) : ControllerBase
 {
 

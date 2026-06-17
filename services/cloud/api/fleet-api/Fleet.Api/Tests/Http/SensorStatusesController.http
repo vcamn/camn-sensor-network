@@ -8,11 +8,11 @@
 @id = 804eb64f-db79-4945-8182-105f208ec543
 
 ### Get All Sensor Statuses
-GET {{HostAddress}}/api/sensorstatuses
+GET {{HostAddress}}/api/{{ApiVersion}}/sensorstatuses
 
 ###
 
 ### Get Sensor Status by ID
-GET {{HostAddress}}/api/sensorstatuses/{{id}}
+GET {{HostAddress}}/api/{{ApiVersion}}/sensorstatuses/{{id}}
 
 ###
