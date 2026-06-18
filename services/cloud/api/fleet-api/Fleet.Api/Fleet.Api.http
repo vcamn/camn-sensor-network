@@ -1,6 +1,0 @@
-﻿@Fleet.Api_HostAddress = 
-
-GET {{Fleet.Api_HostAddress}}/api/sensortypes/{id}
-
-###
-
