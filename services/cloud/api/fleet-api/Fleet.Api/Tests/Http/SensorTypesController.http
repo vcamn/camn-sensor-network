@@ -1,0 +1,63 @@
+﻿# An http-client.env.json should be created in the root directory of the project. 
+# Select the environment in the upper right corner of this file.
+
+### File level variables
+@ApiVersion = v1
+@RequestedBy = Fleet.Api.Tests
+@id = 17fa221d-8f25-4f5b-91c5-1d848c1f1ed7
+
+### Get All Sensor Types
+GET {{HostAddress}}/api/{{ApiVersion}}/sensortypes
+
+###
+
+### Get Sensor Type by ID
+GET {{HostAddress}}/api/{{ApiVersion}}/sensortypes/{{id}}
+
+### 
+
+### Create a new Sensor Type
+POST {{HostAddress}}/api/{{ApiVersion}}/sensortypes
+Content-Type: application/json
+
+{
+  "typeName": "TestSensorType",
+  "description": "Test sensor type for local development",
+  "displayOrder": 100,
+  "isActive": true
+}
+
+### 
+
+### Deactivate a Sensor Type
+POST {{HostAddress}}/api/{{ApiVersion}}/sensortypes/{{id}}/deactivate
+Content-Type: application/json
+
+{
+  "id": {{id}}
+}
+
+###
+
+### Activate a Sensor Type
+POST {{HostAddress}}/api/{{ApiVersion}}/sensortypes/{{id}}/activate
+Content-Type: application/json
+
+{
+  "id": {{id}}
+}
+
+###
+
+### Update a Sensor Type (update "id" property in payload with value you are tesing with)
+PUT {{HostAddress}}/api/{{ApiVersion}}/sensortypes/{{id}}
+Content-Type: application/json
+
+{
+  "id": "17fa221d-8f25-4f5b-91c5-1d848c1f1ed7",
+  "typeName": "TestSensorType2",
+  "description": "Test sensor type for local development (updated)",
+  "displayOrder": 99
+}
+
+###
