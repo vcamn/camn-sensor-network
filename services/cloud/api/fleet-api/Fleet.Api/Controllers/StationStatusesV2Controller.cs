@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fleet.Api.Controllers;
 
 [ApiController]
-[ApiVersion("2.0")]
+[ApiVersion("2.0", Deprecated = true)]
 [Route("api/v{version:apiVersion}/stationstatuses")]
 public class StationStatusesV2Controller : ControllerBase
 {
