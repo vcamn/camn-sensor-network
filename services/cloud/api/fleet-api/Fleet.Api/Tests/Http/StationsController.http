@@ -1,0 +1,45 @@
+﻿# For more info on HTTP files go to https://aka.ms/vs/httpfile
+# An http-client.env.json should be created in the root directory of the project. 
+# Select the environment in the upper right corner of this file.
+
+# File level variables
+@ApiVersion = v1
+@RequestedBy = Fleet.Api.Tests
+@id = c02a2aa4-6853-446d-9b83-37bd01fd13b2
+
+### Get All Stations
+GET {{HostAddress}}/api/{{ApiVersion}}/stations
+
+###
+
+### Get Station by ID
+GET {{HostAddress}}/api/{{ApiVersion}}/stations/{{id}}
+
+###
+
+### Create a new Station
+POST {{HostAddress}}/api/{{ApiVersion}}/stations
+Content-Type: application/json
+
+{
+  "stationStatusCode": "BANANNA",
+  "siteId": "e4627b21-6a57-40fb-a6e7-beed76a570d0",
+  "stationCode": "STN-Drew-1560-002",
+  "description": "Dummy station with the address at AQMT Drew facility that doesn't exist."
+}
+
+###
+
+### Update an existing Station
+PUT {{HostAddress}}/api/{{ApiVersion}}/stations/{{id}}
+Content-Type: application/json
+
+{
+  "id": "c02a2aa4-6853-446d-9b83-37bd01fd13b2",
+  "siteId": "e4627b21-6a57-40fb-a6e7-beed76a570d0",
+  "stationStatusId": "e6028031-2bf3-4a6c-a822-027f2a946c3c",
+  "stationCode": "STN-Drew-1560-001",
+  "description": "Main development station located at AQMT Drew facility."
+}
+
+###

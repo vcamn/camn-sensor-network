@@ -10,17 +10,17 @@ namespace Fleet.Domain.Entities
 
         public Guid StationStatusId { get; set; }
 
-        public string StationCode { get; set; }
+        public required string StationCode { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public DateTime CreatedAtUtc { get; set; }
 
         public DateTime UpdatedAtUtc { get; set; }
 
-        public StationStatus Status { get; set; }
+        public StationStatus? Status { get; set; }
 
-        public Site Site { get; set; }
+        public Site? Site { get; set; }
 
         public ICollection<Sensor> Sensors { get; set; } = [];
 
