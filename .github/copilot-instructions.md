@@ -143,3 +143,54 @@ When generating documentation:
 - Include operational considerations.
 
 Prefer ADR-style explanations when discussing architectural decisions.
+
+---
+
+## Commit Message Guidelines
+
+Generate commit messages using the Conventional Commits format.
+
+### Format
+
+```text
+<type>(<scope>): <short summary>
+
+- <key change>
+- <key change>
+- <key change>
+```
+
+### Requirements
+
+* Use a concise summary line (preferably under 50 characters).
+* Choose the scope based on the primary feature, service, domain, or API area affected.
+* Focus the summary on the most important user-facing or architectural change.
+* Use bullet points to describe significant supporting changes.
+* Do not list every modified file.
+* Group related changes into logical themes.
+* Mention validation, error handling, DTO, entity, or documentation updates only when they are meaningful to understanding the change.
+* Prefer feature-oriented descriptions over implementation details.
+
+### Common Types
+
+* `feat` - New functionality
+* `fix` - Bug fixes
+* `refactor` - Code restructuring without behavior changes
+* `perf` - Performance improvements
+* `test` - Test additions or updates
+* `docs` - Documentation changes
+* `build` - Build or dependency changes
+* `chore` - Maintenance tasks
+
+### Example
+
+```text
+feat(site): add site station lookup endpoint
+
+- Add endpoint to retrieve all stations associated with a site
+- Implement site station queries in the service layer
+- Reuse station DTO mapping across services
+- Strengthen site DTO and entity validation with required properties
+- Improve API error responses for missing sites
+- Update API documentation examples
+```
