@@ -1,7 +1,4 @@
----
-appliesTo:
-  - "services/edge/**"
----
+<!-- appliesTo: "services/edge/**" -->
 
 # Edge Node Instructions
 

@@ -1,7 +1,4 @@
----
-appliesTo:
-  - "services/cloud/api/fleet-api/**"
----
+<!-- appliesTo: "services/cloud/api/fleet-api/**" -->
 
 # Fleet API Instructions
 

@@ -1,7 +1,4 @@
----
-appliesTo:
-  - "services/web/fleet-control/**"
----
+<!-- appliesTo: "services/web/fleet-control/**" -->
 
 # Fleet Control Instructions
 

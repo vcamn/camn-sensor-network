@@ -36,7 +36,7 @@ services/
 
 ## Architecture Principles
 
-Always follow these principles:
+Always follow these architecure principles:
 
 - Prefer simple solutions over premature abstraction.
 - Favor maintainability over cleverness.

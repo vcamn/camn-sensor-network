@@ -1,7 +1,4 @@
----
-appliesTo:
-  - "services/cloud/functions/**"
----
+<!-- appliesTo: "services/cloud/functions/**" -->
 
 # Ingestion Function Instructions
 

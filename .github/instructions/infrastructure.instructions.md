@@ -1,7 +1,4 @@
----
-appliesTo:
-  - "infra/**"
----
+<!-- appliesTo: "infra/**" -->
 
 # Infrastructure Instructions
 

@@ -1,7 +1,4 @@
----
-appliesTo:
-  - "services/shared/contracts/**"
----
+<!-- appliesTo: "services/shared/contracts/**" -->
 
 # Shared Contracts Instructions
 
