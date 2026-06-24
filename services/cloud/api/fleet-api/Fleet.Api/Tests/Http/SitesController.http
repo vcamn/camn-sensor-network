@@ -17,6 +17,11 @@ GET {{HostAddress}}/api/{{ApiVersion}}/sites/{{id}}
 
 ###
 
+### Get All Stations for a Site
+GET {{HostAddress}}/api/{{ApiVersion}}/sites/{{id}}/stations
+
+###
+
 ### Create a new Site
 POST {{HostAddress}}/api/{{ApiVersion}}/sites
 Content-Type: application/json

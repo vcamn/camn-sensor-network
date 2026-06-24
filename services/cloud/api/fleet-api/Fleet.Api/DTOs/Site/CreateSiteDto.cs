@@ -13,24 +13,24 @@ public class CreateSiteDto
     public required string SiteName { get; set; }
 
     [MaxLength(128)]
-    public string? AddressLine1 { get; set; }
+    public required string AddressLine1 { get; set; }
 
     [MaxLength(128)]
-    public string? AddressLine2 { get; set; }
+    public required string AddressLine2 { get; set; }
 
     [Required]
     [MaxLength(64)]
-    public string? City { get; set; }
+    public required string City { get; set; }
 
     [MaxLength(64)]
-    public string? State { get; set; }
+    public required string State { get; set; }
 
     [Required]
     [MaxLength(16)]
-    public string? PostalCode { get; set; }
+    public required string PostalCode { get; set; }
 
     [MaxLength(64)]
-    public string? Country { get; set; }
+    public required string Country { get; set; }
 
     public double? Latitude { get; set; }
 
@@ -41,8 +41,8 @@ public class CreateSiteDto
     public DateTime? LastMaintenanceAtUtc { get; set; }
 
     [MaxLength(64)]
-    public string? ContactName { get; set; }
+    public required string ContactName { get; set; }
 
     [EmailAddress]
-    public string? ContactEmail { get; set; }
+    public required string ContactEmail { get; set; }
 }

@@ -1,5 +1,6 @@
 using Fleet.Api.Contracts;
 using Fleet.Api.DTOs.Site;
+using Fleet.Api.DTOs.Station;
 using Fleet.Domain.Entities;
 using Fleet.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,33 @@ namespace Fleet.Api.Services;
 
 public class SitesService(FleetDbContext context) : ISiteService
 {
+    public async Task<IEnumerable<SiteDto>> GetSitesAsync()
+    {
+        return await context.Sites
+            .Select(s => ToDto(s))
+            .ToListAsync();
+    }
+
+    public async Task<SiteDto?> GetSiteAsync(Guid id)
+    {
+        var site = await context.Sites.FindAsync(id);
+        return site is null ? null : ToDto(site);
+    }
+
+    public async Task<IEnumerable<StationDto>> GetSiteStationsAsync(Guid siteId)
+    {
+        var site = await context.Sites.FindAsync(siteId);
+        if (site is null)
+        {
+            throw new KeyNotFoundException($"Site with id {siteId} not found.");
+        }
+
+        return await context.Stations
+            .Where(station => station.SiteId == siteId)
+            .Select(station => StationService.ToDto(station))
+            .ToListAsync();
+    }
+
     public async Task<SiteDto> CreateSiteAsync(CreateSiteDto createSiteDto)
     {
         var siteStatus = await GetSiteStatusByCodeAsync(createSiteDto.SiteStatusCode);
@@ -37,28 +65,6 @@ public class SitesService(FleetDbContext context) : ISiteService
         return ToDto(site);
     }
 
-    public async Task DeleteSiteAsync(Guid id)
-    {
-        var site = await context.Sites.FindAsync(id) ??
-            throw new KeyNotFoundException($"Site with id {id} not found.");
-
-        context.Sites.Remove(site);
-        await context.SaveChangesAsync();
-    }
-
-    public async Task<SiteDto?> GetSiteAsync(Guid id)
-    {
-        var site = await context.Sites.FindAsync(id);
-        return site is null ? null : ToDto(site);
-    }
-
-    public async Task<IEnumerable<SiteDto>> GetSitesAsync()
-    {
-        return await context.Sites
-            .Select(s => ToDto(s))
-            .ToListAsync();
-    }
-
     public async Task UpdateSiteAsync(Guid id, SiteDto siteDto)
     {
         var site = await context.Sites.FindAsync(id) ??
@@ -80,6 +86,15 @@ public class SitesService(FleetDbContext context) : ISiteService
         site.ContactEmail = siteDto.ContactEmail ?? site.ContactEmail;
         site.UpdatedAtUtc = DateTime.UtcNow;
 
+        await context.SaveChangesAsync();
+    }
+
+    public async Task DeleteSiteAsync(Guid id)
+    {
+        var site = await context.Sites.FindAsync(id) ??
+            throw new KeyNotFoundException($"Site with id {id} not found.");
+
+        context.Sites.Remove(site);
         await context.SaveChangesAsync();
     }
 

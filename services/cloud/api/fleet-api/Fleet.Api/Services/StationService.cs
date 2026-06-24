@@ -82,7 +82,7 @@ public class StationService(FleetDbContext context) : IStationService
             .FirstOrDefaultAsync(ss => ss.Code == stationStatusCode);
     }
 
-    private static StationDto ToDto(Station s)
+    public static StationDto ToDto(Station s)
     {
         return new StationDto
         {

@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Fleet.Api.Contracts;
 using Fleet.Api.DTOs.Site;
+using Fleet.Api.DTOs.Station;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fleet.Api.Controllers
@@ -31,6 +32,34 @@ namespace Fleet.Api.Controllers
             return Ok(site);
         }
 
+        // GET: api/v1/Sites/{id}/stations
+        [HttpGet("{id:guid}/stations")]
+        public async Task<ActionResult<IEnumerable<StationDto>>> GetSiteStations(Guid id)
+        {
+            try
+            {
+                var stations = await siteService.GetSiteStationsAsync(id);
+                if (stations == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(stations);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST: api/v1/Sites
+        [HttpPost]
+        public async Task<ActionResult<SiteDto>> PostSite(CreateSiteDto createSite)
+        {
+            var created = await siteService.CreateSiteAsync(createSite);
+            return CreatedAtAction(nameof(GetSite), new { id = created.Id }, created);
+        }
+
         // PUT: api/v1/Sites/{id}
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> PutSite(Guid id, SiteDto siteDto)
@@ -44,20 +73,12 @@ namespace Fleet.Api.Controllers
             {
                 await siteService.UpdateSiteAsync(id, siteDto);
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
 
             return NoContent();
-        }
-
-        // POST: api/v1/Sites
-        [HttpPost]
-        public async Task<ActionResult<SiteDto>> PostSite(CreateSiteDto createSite)
-        {
-            var created = await siteService.CreateSiteAsync(createSite);
-            return CreatedAtAction(nameof(GetSite), new { id = created.Id }, created);
         }
 
         // DELETE: api/v1/Sites/{id}

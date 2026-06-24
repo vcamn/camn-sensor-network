@@ -8,19 +8,19 @@ namespace Fleet.Domain.Entities
 
         public Guid SiteStatusId { get; set; }
 
-        public string SiteName { get; set; }
+        public required string SiteName { get; set; }
 
-        public string AddressLine1 { get; set; }
+        public required string AddressLine1 { get; set; }
 
-        public string AddressLine2 { get; set; }
+        public string? AddressLine2 { get; set; }
 
-        public string City { get; set; }
+        public required string City { get; set; }
 
-        public string State { get; set; }
+        public required string State { get; set; }
 
-        public string PostalCode { get; set; }
+        public required string PostalCode { get; set; }
 
-        public string Country { get; set; }
+        public required string Country { get; set; }
 
         public double? Latitude { get; set; }
 
@@ -30,15 +30,15 @@ namespace Fleet.Domain.Entities
 
         public DateTime? LastMaintenanceAtUtc { get; set; }
 
-        public string ContactName { get; set; }
+        public required string ContactName { get; set; }
 
-        public string ContactEmail { get; set; }
+        public required string ContactEmail { get; set; }
 
         public DateTime CreatedAtUtc { get; set; }
 
         public DateTime UpdatedAtUtc { get; set; }
 
-        public SiteStatus Status { get; set; }
+        public SiteStatus? Status { get; set; }
 
         public ICollection<Station> Stations { get; set; } = [];
     }
