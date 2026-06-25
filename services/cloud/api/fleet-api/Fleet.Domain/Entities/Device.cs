@@ -10,17 +10,17 @@ namespace Fleet.Domain.Entities
 
         public Guid DeviceStatusId { get; set; }
 
-        public string DeviceIdentifier { get; set; }
+        public required string DeviceIdentifier { get; set; }
 
-        public string DeviceType { get; set; }
+        public required string DeviceType { get; set; }
 
-        public string SerialNumber { get; set; }
+        public string? SerialNumber { get; set; }
 
-        public string MacAddress { get; set; }
+        public string? MacAddress { get; set; }
 
-        public string IoTHubDeviceId { get; set; }
+        public string? IoTHubDeviceId { get; set; }
 
-        public string FirmwareVersion { get; set; }
+        public string? FirmwareVersion { get; set; }
 
         public DateTime? LastActiveAtUtc { get; set; }
 
@@ -28,9 +28,9 @@ namespace Fleet.Domain.Entities
 
         public DateTime UpdatedAtUtc { get; set; }
 
-        public DeviceStatus DeviceStatus { get; set; }
+        public DeviceStatus? DeviceStatus { get; set; }
 
-        public Station Station { get; set; }
+        public Station? Station { get; set; }
 
         public ICollection<Sensor> Sensors { get; set; } = [];
     }
