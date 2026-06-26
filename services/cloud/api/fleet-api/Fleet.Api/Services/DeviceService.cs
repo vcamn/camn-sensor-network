@@ -12,13 +12,16 @@ public class DeviceService(FleetDbContext context) : IDeviceService
     public async Task<IEnumerable<DeviceDto>> GetDevicesAsync()
     {
         return await context.Devices
+            .Include(d => d.DeviceStatus)
             .Select(d => ToDto(d))
             .ToListAsync();
     }
 
     public async Task<DeviceDto?> GetDeviceAsync(Guid id)
     {
-        var device = await context.Devices.FindAsync(id);
+        var device = await context.Devices
+            .Include(d => d.DeviceStatus)
+            .FirstOrDefaultAsync(d => d.Id == id);
         return device is null ? null : ToDto(device);
     }
 
@@ -94,7 +97,7 @@ public class DeviceService(FleetDbContext context) : IDeviceService
         {
             Id = device.Id,
             StationId = device.StationId,
-            DeviceStatusCode = device.DeviceStatus.Code,
+            DeviceStatusCode = device.DeviceStatus!.Code,
             DeviceIdentifier = device.DeviceIdentifier,
             DeviceType = device.DeviceType,
             SerialNumber = device.SerialNumber,

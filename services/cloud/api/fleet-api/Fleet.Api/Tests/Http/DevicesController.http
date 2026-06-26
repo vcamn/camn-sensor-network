@@ -1,0 +1,44 @@
+﻿# For more info on HTTP files go to https://aka.ms/vs/httpfile
+# An http-client.env.json should be created in the root directory of the project. 
+# Select the environment in the upper right corner of this file.
+
+# File level variables
+@ApiVersion = v1
+@RequestedBy = Fleet.Api.Tests
+@id = 2db42ee0-3550-4f32-b880-45c9932698c2
+
+GET {{HostAddress}}/api/{{ApiVersion}}/devices
+
+###
+
+GET {{HostAddress}}/api/{{ApiVersion}}/devices/{{id}}
+
+###
+
+POST {{HostAddress}}/api/{{ApiVersion}}/devices
+Content-Type: application/json
+
+{
+  "stationId": "c02a2aa4-6853-446d-9b83-37bd01fd13b2",
+  "deviceStatusCode": "ACTIVE",
+  "deviceIdentifier": "DEV-RPI-0001",
+  "deviceType": "RASPBERRY_PI_ZERO_2W",
+  "ioTHubDeviceId": "DEV-RPI-0001"
+} 
+
+###
+
+PUT {{HostAddress}}/api/{{ApiVersion}}/devices/{{id}}
+Content-Type: application/json
+
+{
+  "id": "2db42ee0-3550-4f32-b880-45c9932698c2",
+  "deviceStatusCode": "ACTIVE",
+  "deviceIdentifier": "DEV-RPI-0001",
+  "deviceType": "RASPBERRY_PI_ZERO_2W",
+  "serialNumber": "SN-ABC-123456",
+  "macAddress": "00:1A:2B:3C:4D:5E",
+  "firmwareVersion": "v1.2.3"
+}
+
+###
