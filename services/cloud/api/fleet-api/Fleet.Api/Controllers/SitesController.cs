@@ -83,18 +83,10 @@ namespace Fleet.Api.Controllers
 
         // DELETE: api/v1/Sites/{id}
         [HttpDelete("{id:guid}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> DeleteSite(Guid id)
         {
-            try
-            {
-                await siteService.DeleteSiteAsync(id);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            return Ok();
         }
     }
 }

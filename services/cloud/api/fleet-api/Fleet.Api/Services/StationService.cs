@@ -37,11 +37,8 @@ public class StationService(FleetDbContext context) : IStationService
 
     public async Task DeleteStationAsync(Guid id)
     {
-        var station = await context.Stations.FindAsync(id) ??
-            throw new KeyNotFoundException($"Station with id {id} not found.");
-
-        context.Stations.Remove(station);
-        await context.SaveChangesAsync();
+        // Network operations have net yet defined the process for deleting stations
+        throw new NotImplementedException();
     }
 
     public async Task<StationDto?> GetStationAsync(Guid id)

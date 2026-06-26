@@ -91,11 +91,8 @@ public class SitesService(FleetDbContext context) : ISiteService
 
     public async Task DeleteSiteAsync(Guid id)
     {
-        var site = await context.Sites.FindAsync(id) ??
-            throw new KeyNotFoundException($"Site with id {id} not found.");
-
-        context.Sites.Remove(site);
-        await context.SaveChangesAsync();
+        // Network operations have net yet defined the process for deleting sites
+        throw new NotImplementedException();
     }
 
     public async Task<bool> SiteExistsAsync(Guid id)

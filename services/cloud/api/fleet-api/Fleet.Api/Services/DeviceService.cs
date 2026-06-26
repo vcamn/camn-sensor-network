@@ -73,11 +73,8 @@ public class DeviceService(FleetDbContext context) : IDeviceService
 
     public async Task DeleteDeviceAsync(Guid id)
     {
-        var device = await context.Devices.FindAsync(id) ??
-            throw new KeyNotFoundException($"Device with id {id} not found.");
-
-        context.Devices.Remove(device);
-        await context.SaveChangesAsync();
+        // Network operations have not yet defined the process for deleting devices
+        throw new NotImplementedException();
     }
 
     public async Task<bool> DeviceExistsAsync(Guid id)

@@ -27,11 +27,8 @@ public class SiteStatusService(FleetDbContext context) : ISiteStatusService
 
     public async Task DeleteStatusAsync(Guid id)
     {
-        var siteStatus = await context.SiteStatuses.FindAsync(id) ??
-            throw new KeyNotFoundException($"SiteStatus with id {id} not found.");
-
-        context.SiteStatuses.Remove(siteStatus);
-        await context.SaveChangesAsync();
+        // Network operations have net yet defined the process for deleting site statuses
+        throw new NotImplementedException();
     }
 
     public async Task<SystemStatusDto?> GetStatusAsync(Guid id)

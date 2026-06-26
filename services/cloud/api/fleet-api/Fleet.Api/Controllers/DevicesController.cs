@@ -68,22 +68,9 @@ public class DevicesController(IDeviceService deviceService) : ControllerBase
 
     // DELETE: api/Devices/5
     [HttpDelete("{id}")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public async Task<IActionResult> DeleteDevice(Guid id)
     {
-        if (!await deviceService.DeviceExistsAsync(id))
-        {
-            return NotFound();
-        }
-
-        try
-        {
-            await deviceService.DeleteDeviceAsync(id);
-        }
-        catch (KeyNotFoundException)
-        {
-            return NotFound();
-        }
-
-        return NoContent();
+        return Ok();
     }
 }

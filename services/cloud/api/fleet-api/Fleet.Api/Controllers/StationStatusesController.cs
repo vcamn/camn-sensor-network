@@ -71,17 +71,9 @@ public class StationStatusesController(IStationStatusService stationStatusServic
 
     // DELETE: api/StationStatuses/5
     [HttpDelete("{id}")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public async Task<IActionResult> DeleteStationStatus(Guid id)
     {
-        try
-        {
-            await stationStatusService.DeleteStatusAsync(id);
-        }
-        catch (KeyNotFoundException)
-        {
-            return NotFound();
-        }
-
-        return NoContent();
+        return Ok();
     }
 }

@@ -72,18 +72,9 @@ public class SiteStatusesController(ISiteStatusService siteStatusService) : Cont
 
     // DELETE: api/SiteStatuses/5
     [HttpDelete("{id}")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public async Task<IActionResult> DeleteSiteStatus(Guid id)
     {
-        try
-        {
-            await siteStatusService.DeleteStatusAsync(id);
-
-        }
-        catch (KeyNotFoundException)
-        {
-            return NotFound();
-        }
-
-        return NoContent();
+        return Ok();
     }
 }

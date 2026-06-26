@@ -27,11 +27,8 @@ public class StationStatusService(FleetDbContext context) : IStationStatusServic
 
     public async Task DeleteStatusAsync(Guid id)
     {
-        var stationStatus = await context.StationStatuses.FindAsync(id)
-            ?? throw new KeyNotFoundException($"StationStatus with id {id} not found.");
-
-        context.StationStatuses.Remove(stationStatus);
-        await context.SaveChangesAsync();
+        // Network operations have net yet defined the process for deleting station statuses
+        throw new NotImplementedException();
     }
 
     public async Task<SystemStatusDto?> GetStatusAsync(Guid id)
