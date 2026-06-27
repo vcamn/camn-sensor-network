@@ -19,6 +19,7 @@ public class FleetDbContext : DbContext
     public DbSet<DeviceStatus> DeviceStatuses => Set<DeviceStatus>();
     public DbSet<IntegrationTemplate> IntegrationTemplates => Set<IntegrationTemplate>();
     public DbSet<IntegrationType> IntegrationTypes => Set<IntegrationType>();
+    public DbSet<MeasurementUnit> MeasurementUnits => Set<MeasurementUnit>();
     public DbSet<SensorType> SensorTypes => Set<SensorType>();
     public DbSet<Sensor> Sensors => Set<Sensor>();
     public DbSet<SensorStatus> SensorStatuses => Set<SensorStatus>();

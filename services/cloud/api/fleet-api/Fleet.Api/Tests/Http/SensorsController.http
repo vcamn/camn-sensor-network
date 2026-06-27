@@ -1,0 +1,52 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+# An http-client.env.json should be created in the root directory of the project. 
+# Select the environment in the upper right corner of this file.
+
+# File level variables
+@ApiVersion = v1
+@RequestedBy = Fleet.Api.Tests
+@id = 5698d82b-e44c-40b8-8ce9-7652c3b05ca9
+@stationId = "c02a2aa4-6853-446d-9b83-37bd01fd13b2"
+@measurementUnitCode = "ug/m3"
+@deviceIdentifier = "RPI-001"
+
+### Get All Sensors
+GET {{HostAddress}}/api/{{ApiVersion}}/sensors
+
+###
+
+### Get Sensor by ID
+GET {{HostAddress}}/api/{{ApiVersion}}/sensors/{{id}}
+
+###
+
+### Create Sensor
+POST {{HostAddress}}/api/{{ApiVersion}}/sensors
+Content-Type: application/json
+
+{
+  "sensorTypeName": "PurpleAir",
+  "stationId": {{stationId}},
+  "deviceIdentifier": {{deviceIdentifier}},
+  "sensorStatusCode": "ACTIVE",
+  "measurementUnitCode": {{measurementUnitCode}},
+  "sensorIdentifier": "SNS-PA-0001"
+}
+
+###
+
+### Update Sensor
+PUT {{HostAddress}}/api/{{ApiVersion}}/sensors/{{id}}
+Content-Type: application/json
+
+{
+  "id": "5698d82b-e44c-40b8-8ce9-7652c3b05ca9",
+  "sensorTypeName": "PurpleAir",
+  "stationId": {{stationId}},
+  "deviceIdentifier": {{deviceIdentifier}},
+  "sensorStatusCode": "ACTIVE",
+  "measurementUnitCode": {{measurementUnitCode}},
+  "sensorIdentifier": "PA-001"
+}
+
+###

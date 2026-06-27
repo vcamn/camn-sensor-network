@@ -33,6 +33,7 @@ builder.Services.AddScoped<ISensorTypeService, SensorTypeService>();
 builder.Services.AddScoped<ISiteService, SitesService>();
 builder.Services.AddScoped<IStationService, StationService>();
 builder.Services.AddScoped<IDeviceService, DeviceService>();
+builder.Services.AddScoped<ISensorService, SensorService>();
 
 // Configure controllers and JSON options to handle circular references gracefully
 builder.Services.AddControllers()
