@@ -25,8 +25,6 @@ public class StationService(FleetDbContext context) : IStationService
             Description = createStationDto.Description,
             Site = site,
             Status = stationStatus,
-            CreatedAtUtc = DateTime.UtcNow,
-            UpdatedAtUtc = DateTime.UtcNow
         };
 
         context.Stations.Add(station);
@@ -43,13 +41,16 @@ public class StationService(FleetDbContext context) : IStationService
 
     public async Task<StationDto?> GetStationAsync(Guid id)
     {
-        var station = await context.Stations.FindAsync(id);
+        var station = await context.Stations
+            .Include(s => s.Status)
+            .FirstOrDefaultAsync(s => s.Id == id);
         return station is null ? null : ToDto(station);
     }
 
     public async Task<IEnumerable<StationDto>> GetStationsAsync()
     {
         return await context.Stations
+            .Include(s => s.Status)
             .Select(s => ToDto(s))
             .ToListAsync();
     }
@@ -59,10 +60,22 @@ public class StationService(FleetDbContext context) : IStationService
         var station = await context.Stations.FindAsync(id) ??
             throw new KeyNotFoundException($"Station with id {id} not found.");
 
-        station.StationStatusId = stationDto.StationStatusId;
+        var stationStatus = await GetStationStatusByCodeAsync(stationDto.StationStatusCode) ??
+            throw new ValidationException($"Unknown station status with code '{stationDto.StationStatusCode}'.");
+
+        var site = await context.Sites.FindAsync(stationDto.SiteId) ??
+            throw new KeyNotFoundException($"Unknown site with id '{stationDto.SiteId}'.");
+
+        if (station.SiteId != stationDto.SiteId)
+        {
+            var message = $"Operation does not support Request. Station {station.Id} is associated with site {station.SiteId}, but the request attempted to change it to site {stationDto.SiteId}.";
+            throw new ValidationException(message);
+        }
+
+        station.StationStatusId = stationStatus.Id;
         station.StationCode = stationDto.StationCode ?? station.StationCode;
         station.Description = stationDto.Description ?? station.Description;
-        station.SiteId = stationDto.SiteId;
+        station.SiteId = site.Id;
         station.UpdatedAtUtc = DateTime.UtcNow;
 
         await context.SaveChangesAsync();
@@ -73,7 +86,7 @@ public class StationService(FleetDbContext context) : IStationService
         return await context.Stations.AnyAsync(s => s.Id == id);
     }
 
-    private async Task<StationStatus?> GetStationStatusByCodeAsync(string stationStatusCode)
+    public async Task<StationStatus?> GetStationStatusByCodeAsync(string stationStatusCode)
     {
         return await context.StationStatuses
             .FirstOrDefaultAsync(ss => ss.Code == stationStatusCode);
@@ -85,7 +98,7 @@ public class StationService(FleetDbContext context) : IStationService
         {
             Id = s.Id,
             SiteId = s.SiteId,
-            StationStatusId = s.StationStatusId,
+            StationStatusCode = s.Status.Code,
             StationCode = s.StationCode,
             Description = s.Description,
             CreatedAtUtc = s.CreatedAtUtc,

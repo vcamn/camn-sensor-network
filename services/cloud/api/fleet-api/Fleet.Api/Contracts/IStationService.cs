@@ -1,4 +1,5 @@
 using Fleet.Api.DTOs.Station;
+using Fleet.Domain.Entities;
 
 namespace Fleet.Api.Contracts;
 
@@ -15,4 +16,6 @@ public interface IStationService
     Task DeleteStationAsync(Guid id);
 
     Task<bool> StationExistsAsync(Guid id);
+
+    Task<StationStatus?> GetStationStatusByCodeAsync(string stationStatusCode);
 }

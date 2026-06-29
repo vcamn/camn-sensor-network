@@ -11,7 +11,8 @@ public class StationDto
     public Guid SiteId { get; set; }
 
     [Required]
-    public Guid StationStatusId { get; set; }
+    [MaxLength(32)]
+    public required string StationStatusCode { get; set; }
 
     public string? StationCode { get; set; }
 

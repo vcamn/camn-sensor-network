@@ -18,7 +18,7 @@ namespace Fleet.Domain.Entities
 
         public DateTime UpdatedAtUtc { get; set; }
 
-        public StationStatus? Status { get; set; }
+        public required StationStatus Status { get; set; }
 
         public Site? Site { get; set; }
 
