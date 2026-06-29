@@ -111,7 +111,7 @@ public class SitesService(FleetDbContext context) : ISiteService
         return await context.Sites.AnyAsync(s => s.Id == id);
     }
 
-    private async Task<SiteStatus?> GetSiteStatusByCodeAsync(string siteStatusCode)
+    public async Task<SiteStatus?> GetSiteStatusByCodeAsync(string siteStatusCode)
     {
         var siteStatus = await context.SiteStatuses
             .FirstOrDefaultAsync(ss => ss.Code == siteStatusCode);

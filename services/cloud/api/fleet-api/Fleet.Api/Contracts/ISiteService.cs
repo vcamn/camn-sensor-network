@@ -1,5 +1,6 @@
 using Fleet.Api.DTOs.Site;
 using Fleet.Api.DTOs.Station;
+using Fleet.Domain.Entities;
 
 namespace Fleet.Api.Contracts;
 
@@ -18,4 +19,6 @@ public interface ISiteService
     Task DeleteSiteAsync(Guid id);
 
     Task<bool> SiteExistsAsync(Guid id);
+
+    Task<SiteStatus?> GetSiteStatusByCodeAsync(string siteStatusCode);
 }
