@@ -3,6 +3,7 @@ using Fleet.Api.Contracts;
 using Fleet.Api.DTOs.Site;
 using Fleet.Api.DTOs.Station;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Fleet.Api.Controllers
 {
@@ -56,8 +57,16 @@ namespace Fleet.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<SiteDto>> PostSite(CreateSiteDto createSite)
         {
-            var created = await siteService.CreateSiteAsync(createSite);
-            return CreatedAtAction(nameof(GetSite), new { id = created.Id }, created);
+            try
+            {
+                var created = await siteService.CreateSiteAsync(createSite);
+                return CreatedAtAction(nameof(GetSite), new { id = created.Id }, created);
+            }
+            catch (ValidationException ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT: api/v1/Sites/{id}
@@ -76,6 +85,10 @@ namespace Fleet.Api.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
             }
 
             return NoContent();

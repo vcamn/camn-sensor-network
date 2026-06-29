@@ -12,11 +12,16 @@ public class CreateSiteDto
     [MaxLength(128)]
     public required string SiteName { get; set; }
 
+    [Required]
+    [MaxLength(32)]
+    public required string SiteCode { get; set; }
+
+    [Required]
     [MaxLength(128)]
     public required string AddressLine1 { get; set; }
 
     [MaxLength(128)]
-    public required string AddressLine2 { get; set; }
+    public string? AddressLine2 { get; set; }
 
     [Required]
     [MaxLength(64)]

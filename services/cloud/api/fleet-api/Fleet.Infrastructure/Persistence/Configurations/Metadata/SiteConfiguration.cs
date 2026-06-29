@@ -21,6 +21,10 @@ public class SiteConfiguration : IEntityTypeConfiguration<Site>
                .IsRequired()
                .HasMaxLength(256);
 
+        builder.Property(e => e.SiteCode)
+               .IsRequired()
+               .HasMaxLength(32);
+
         builder.Property(e => e.AddressLine2)
                .IsRequired(false)
                .HasMaxLength(256);

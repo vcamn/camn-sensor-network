@@ -5,7 +5,7 @@
 # File level variables
 @ApiVersion = v1
 @RequestedBy = Fleet.Api.Tests
-@id = e4627b21-6a57-40fb-a6e7-beed76a570d0
+@id = 4a9d9369-ea6b-402d-8673-5f77fcda8681
 
 ### Get All Sites
 GET {{HostAddress}}/api/{{ApiVersion}}/sites
@@ -28,7 +28,8 @@ Content-Type: application/json
 
 {
   "siteStatusCode": "ACTIVE",
-  "siteName": "1560 Drew Ave Davis",
+  "siteName": "1560 Drew Ave, Davis",
+  "siteCode": "SITE-DAVIS-DREW-AVE",
   "addressLine1": "1560 Drew Avenue",
   "addressLine2": null,
   "city": "Davis",
@@ -50,23 +51,9 @@ PUT {{HostAddress}}/api/{{ApiVersion}}/sites/{{id}}
 Content-Type: application/json
 
 {
-  "id": "e4627b21-6a57-40fb-a6e7-beed76a570d0",
-  "siteStatusId": "20ab0ee4-2b76-462e-90f5-1c10039c1bfd",
-  "siteName": "1560 Drew Ave Davis",
-  "addressLine1": "1560 Drew Avenue",
-  "addressLine2": "Test address line #2",
-  "city": "Davis",
-  "state": "CA",
-  "postalCode": "95616",
-  "country": "USA",
-  "latitude": 38.5449,
-  "longitude": -121.7405,
-  "installedAtUtc": "2025-12-15T14:30:00Z",
-  "lastMaintenanceAtUtc": "2026-06-22T09:45:00Z",
-  "contactName": "Rudi De Marco",
-  "contactEmail": "rdemarco@ucdavis.edu",
-  "createdAtUtc": "2026-06-22T21:14:30.124423Z",
-  "updatedAtUtc": "2026-06-22T21:14:30.124448Z"
+  "id": "4a9d9369-ea6b-402d-8673-5f77fcda8681",
+  "siteStatusCode": "ACTIVE",
+  "siteCode": "SITE-DAVIS-DREW-AVE-01"
 }
 
 ###

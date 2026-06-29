@@ -8,9 +8,12 @@ public class SiteDto
     public Guid Id { get; set; }
 
     [Required]
-    public Guid SiteStatusId { get; set; }
+    [MaxLength(32)]
+    public required string SiteStatusCode { get; set; }
 
     public string? SiteName { get; set; }
+
+    public string? SiteCode { get; set; }
 
     public string? AddressLine1 { get; set; }
 
@@ -36,7 +39,7 @@ public class SiteDto
 
     public string? ContactEmail { get; set; }
 
-    public DateTime CreatedAtUtc { get; set; }
+    public DateTime? CreatedAtUtc { get; set; }
 
-    public DateTime UpdatedAtUtc { get; set; }
+    public DateTime? UpdatedAtUtc { get; set; }
 }

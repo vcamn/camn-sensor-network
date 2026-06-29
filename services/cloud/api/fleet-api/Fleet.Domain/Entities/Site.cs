@@ -10,6 +10,8 @@ namespace Fleet.Domain.Entities
 
         public required string SiteName { get; set; }
 
+        public required string SiteCode { get; set; }
+
         public required string AddressLine1 { get; set; }
 
         public string? AddressLine2 { get; set; }
@@ -38,7 +40,7 @@ namespace Fleet.Domain.Entities
 
         public DateTime UpdatedAtUtc { get; set; }
 
-        public SiteStatus? Status { get; set; }
+        public required SiteStatus Status { get; set; }
 
         public ICollection<Station> Stations { get; set; } = [];
     }
