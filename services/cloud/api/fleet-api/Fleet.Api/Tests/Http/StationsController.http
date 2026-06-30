@@ -18,6 +18,16 @@ GET {{HostAddress}}/api/{{ApiVersion}}/stations/{{id}}
 
 ###
 
+### Get Devices for Station by ID
+GET {{HostAddress}}/api/{{ApiVersion}}/stations/{{id}}/devices
+
+###
+
+### Get Sensors for Station by ID
+GET {{HostAddress}}/api/{{ApiVersion}}/stations/{{id}}/sensors
+
+###
+
 ### Create a new Station
 POST {{HostAddress}}/api/{{ApiVersion}}/stations
 Content-Type: application/json

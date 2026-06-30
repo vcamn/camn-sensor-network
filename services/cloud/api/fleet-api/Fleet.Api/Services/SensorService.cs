@@ -156,31 +156,31 @@ public class SensorService(FleetDbContext context) : ISensorService
         return await context.Sensors.AnyAsync(s => s.Id == id);
     }
 
-    private async Task<SensorStatus?> GetSensorStatusByCodeAsync(string code)
+    public async Task<SensorStatus?> GetSensorStatusByCodeAsync(string code)
     {
         return await context.SensorStatuses
             .FirstOrDefaultAsync(s => s.Code == code);
     }
 
-    private async Task<SensorType?> GetSensorTypeByTypeName(string sensorTypeName)
+    public async Task<SensorType?> GetSensorTypeByTypeName(string sensorTypeName)
     {
         return await context.SensorTypes
             .FirstOrDefaultAsync(s => s.TypeName == sensorTypeName);
     }
 
-    private async Task<MeasurementUnit?> GetMeasurementUnitByCodeAsync(string code)
+    public async Task<MeasurementUnit?> GetMeasurementUnitByCodeAsync(string code)
     {
         return await context.MeasurementUnits
             .FirstOrDefaultAsync(m => m.Code == code);
     }
 
-    private async Task<Device?> GetDeviceByIdentifierAsync(string deviceIdentifier)
+    public async Task<Device?> GetDeviceByIdentifierAsync(string deviceIdentifier)
     {
         return await context.Devices
             .FirstOrDefaultAsync(d => d.DeviceIdentifier == deviceIdentifier);
     }
 
-    private static SensorDto ToDto(Sensor sensor)
+    public static SensorDto ToDto(Sensor sensor)
     {
         return new SensorDto
         {

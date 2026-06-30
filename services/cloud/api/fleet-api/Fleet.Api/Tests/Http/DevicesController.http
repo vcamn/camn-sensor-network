@@ -5,7 +5,8 @@
 # File level variables
 @ApiVersion = v1
 @RequestedBy = Fleet.Api.Tests
-@id = 2db42ee0-3550-4f32-b880-45c9932698c2
+@id = 95dd2e63-75e4-4167-9ad5-d759dacbc6c9
+@stationId = 55bc2233-8663-45cc-ae71-0eb38c95a7eb
 
 GET {{HostAddress}}/api/{{ApiVersion}}/devices
 
@@ -19,9 +20,9 @@ POST {{HostAddress}}/api/{{ApiVersion}}/devices
 Content-Type: application/json
 
 {
-  "stationId": "c02a2aa4-6853-446d-9b83-37bd01fd13b2",
+  "stationId": "{{stationId}}",
   "deviceStatusCode": "ACTIVE",
-  "deviceIdentifier": "DEV-RPI-0001",
+  "deviceIdentifier": "DEV-RPI-01",
   "deviceType": "RASPBERRY_PI_ZERO_2W"
 } 
 
@@ -31,10 +32,10 @@ PUT {{HostAddress}}/api/{{ApiVersion}}/devices/{{id}}
 Content-Type: application/json
 
 {
-  "id": "2db42ee0-3550-4f32-b880-45c9932698c2",
+  "id": "{{id}}",
   "deviceStatusCode": "ACTIVE",
-  "deviceIdentifier": "RPI-001",
-  "deviceType": "Raspberry PI Zero 2W",
+  "deviceIdentifier": "DEV-RPI-0001",
+  "deviceType": "Raspberry Pi Zero 2W",
   "serialNumber": "SN-ABC-123456",
   "macAddress": "00:1A:2B:3C:4D:5E",
   "firmwareVersion": "v1.2.3",

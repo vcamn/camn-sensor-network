@@ -1,3 +1,5 @@
+using Fleet.Api.DTOs.Device;
+using Fleet.Api.DTOs.Sensor;
 using Fleet.Api.DTOs.Station;
 using Fleet.Domain.Entities;
 
@@ -18,4 +20,8 @@ public interface IStationService
     Task<bool> StationExistsAsync(Guid id);
 
     Task<StationStatus?> GetStationStatusByCodeAsync(string stationStatusCode);
+
+    Task<IEnumerable<DeviceDto>> GetStationDevicesAsync(Guid stationId);
+
+    Task<IEnumerable<SensorDto>> GetStationSensorsAsync(Guid id);
 }

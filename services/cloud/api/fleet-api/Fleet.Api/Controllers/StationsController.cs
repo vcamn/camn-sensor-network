@@ -1,5 +1,7 @@
 using Asp.Versioning;
 using Fleet.Api.Contracts;
+using Fleet.Api.DTOs.Device;
+using Fleet.Api.DTOs.Sensor;
 using Fleet.Api.DTOs.Station;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -30,6 +32,47 @@ public class StationsController(IStationService stationService) : ControllerBase
         }
 
         return Ok(station);
+    }
+
+    // GET: api/v1/Stations/{id}/devices
+    [HttpGet("{id:guid}/devices")]
+    public async Task<ActionResult<IEnumerable<DeviceDto>>> GetStationDevices(Guid id)
+    {
+        try
+        {
+            var devices = await stationService.GetStationDevicesAsync(id);
+            if (!devices.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(devices);
+        }
+        catch (KeyNotFoundException ex)
+        { 
+            return BadRequest(ex.Message);
+        }
+    }
+
+
+    // GET: api/v1/Stations/{id}/sensors
+    [HttpGet("{id:guid}/sensors")]
+    public async Task<ActionResult<IEnumerable<SensorDto>>> GetStationSensors(Guid id)
+    {
+        try
+        {
+            var sensors = await stationService.GetStationSensorsAsync(id);
+            if (!sensors.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(sensors);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     // PUT: api/v1/Stations/{id}

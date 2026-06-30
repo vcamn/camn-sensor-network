@@ -1,4 +1,5 @@
 using Fleet.Api.DTOs.Sensor;
+using Fleet.Domain.Entities;
 
 namespace Fleet.Api.Contracts;
 
@@ -46,4 +47,8 @@ public interface ISensorService
     /// <param name="id">The sensor ID.</param>
     /// <returns>True if the sensor exists; otherwise false.</returns>
     Task<bool> SensorExistsAsync(Guid id);
+    Task<SensorStatus?> GetSensorStatusByCodeAsync(string code);
+    Task<SensorType?> GetSensorTypeByTypeName(string sensorTypeName);
+    Task<MeasurementUnit?> GetMeasurementUnitByCodeAsync(string code);
+    Task<Device?> GetDeviceByIdentifierAsync(string deviceIdentifier);
 }

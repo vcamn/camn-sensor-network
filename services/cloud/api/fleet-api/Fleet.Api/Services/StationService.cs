@@ -1,4 +1,6 @@
 using Fleet.Api.Contracts;
+using Fleet.Api.DTOs.Device;
+using Fleet.Api.DTOs.Sensor;
 using Fleet.Api.DTOs.Station;
 using Fleet.Domain.Entities;
 using Fleet.Infrastructure.Persistence;
@@ -52,6 +54,39 @@ public class StationService(FleetDbContext context) : IStationService
         return await context.Stations
             .Include(s => s.Status)
             .Select(s => ToDto(s))
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<DeviceDto>> GetStationDevicesAsync(Guid stationId)
+    {
+        var station = await context.Stations.FindAsync(stationId);
+        if (station is null)
+        {
+            throw new KeyNotFoundException($"Station with id {stationId} not found.");
+        }
+
+        return await context.Devices
+            .Where(d => d.StationId == stationId)
+            .Include(d => d.DeviceStatus)
+            .Select(d => DeviceService.ToDto(d))
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<SensorDto>> GetStationSensorsAsync(Guid stationId)
+    {
+        var station = await context.Stations.FindAsync(stationId);
+        if (station is null)
+        {
+            throw new KeyNotFoundException($"Station with id {stationId} not found.");
+        }
+
+        return await context.Sensors
+            .Where(s => s.StationId == stationId)
+            .Include(s => s.SensorType)
+            .Include(s => s.Status)
+            .Include(s => s.MeasurementUnit)
+            .Include(s => s.Device)
+            .Select(s => SensorService.ToDto(s))
             .ToListAsync();
     }
 

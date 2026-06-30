@@ -88,7 +88,7 @@ public class DeviceService(FleetDbContext context) : IDeviceService
             .FirstOrDefaultAsync(ds => ds.Code == deviceStatusCode);
     }
 
-    private static DeviceDto ToDto(Device device)
+    public static DeviceDto ToDto(Device device)
     {
         return new DeviceDto
         {
