@@ -14,26 +14,22 @@ namespace Fleet.Domain.Entities
 
         public Guid SensorStatusId { get; set; }
 
-        public Guid MeasurementUnitId { get; set; }
-
-        public string SensorIdentifier { get; set; }
+        public required string SensorIdentifier { get; set; }
 
         public DateTime? CalibrationDate { get; set; }
 
-        public DateTime CreatedAtUtc { get; set; }
+        public DateTime? CreatedAtUtc { get; set; }
 
-        public DateTime UpdatedAtUtc { get; set; }
+        public DateTime? UpdatedAtUtc { get; set; }
 
-        public SensorStatus Status { get; set; }
+        public required SensorStatus Status { get; set; }
 
-        public SensorType SensorType { get; set; }
+        public required SensorType SensorType { get; set; }
 
-        public Station Station { get; set; }
+        public Station? Station { get; set; }
 
         public Device? Device { get; set; }
         
-        public MeasurementUnit MeasurementUnit { get; set; }
-
         public ICollection<SensorIntegration> SensorIntegrations { get; set; } = [];
 
         public ICollection<SensorCalibration> SensorCalibrations { get; set; } = [];

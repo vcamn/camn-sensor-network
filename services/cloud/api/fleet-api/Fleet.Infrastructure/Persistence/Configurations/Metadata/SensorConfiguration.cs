@@ -17,9 +17,6 @@ public class SensorConfiguration : IEntityTypeConfiguration<Sensor>
                .IsRequired()
                .HasMaxLength(48);
 
-        builder.Property(e => e.MeasurementUnitId)
-                .IsRequired();
-
         builder.Property(e => e.CreatedAtUtc)
               .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
@@ -48,12 +45,6 @@ public class SensorConfiguration : IEntityTypeConfiguration<Sensor>
                .WithMany(d => d.Sensors)
                .HasForeignKey(e => e.DeviceId)
                .IsRequired(false)
-               .OnDelete(DeleteBehavior.NoAction);
-
-        builder.HasOne(e => e.MeasurementUnit)
-               .WithMany(m => m.Sensors)
-               .HasForeignKey(e => e.MeasurementUnitId)
-               .IsRequired()
                .OnDelete(DeleteBehavior.NoAction);
     }
 }

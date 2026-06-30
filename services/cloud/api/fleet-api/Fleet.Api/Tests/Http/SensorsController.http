@@ -7,7 +7,6 @@
 @RequestedBy = Fleet.Api.Tests
 @id = ff3875f1-ac9b-4549-a9e8-c8d2aac1e81d
 @stationId = "55bc2233-8663-45cc-ae71-0eb38c95a7eb"
-@measurementUnitCode = "mph"
 @deviceIdentifier = "DEV-RPI-0001"
 
 ### Get All Sensors
@@ -28,9 +27,8 @@ Content-Type: application/json
   "sensorTypeName": "LTWind",
   "stationId": {{stationId}},
   "deviceIdentifier": {{deviceIdentifier}},
-  "sensorStatusCode": "ACTIVE",
-  "measurementUnitCode": {{measurementUnitCode}},
-  "sensorIdentifier": "SNS-LTW-0001"
+  "sensorStatusCode": "INACTIVE",
+  "sensorIdentifier": "SNS-LTW-0002"
 }
 
 ###
@@ -45,7 +43,6 @@ Content-Type: application/json
   "stationId": {{stationId}},
   "deviceIdentifier": {{deviceIdentifier}},
   "sensorStatusCode": "ACTIVE",
-  "measurementUnitCode": {{measurementUnitCode}},
   "sensorIdentifier": "SNS-AL80-0031"
 }
 

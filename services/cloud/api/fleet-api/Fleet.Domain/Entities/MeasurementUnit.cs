@@ -12,7 +12,5 @@ public class MeasurementUnit
 
     public int DisplayOrder { get; private set; }
 
-    public ICollection<Sensor> Sensors { get; private set; } = [];
-
     private MeasurementUnit() { } // For EF Core
 }

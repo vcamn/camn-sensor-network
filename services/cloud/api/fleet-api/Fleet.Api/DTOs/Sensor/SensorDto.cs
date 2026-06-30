@@ -19,10 +19,6 @@ public class SensorDto
     [StringLength(50, MinimumLength = 1, ErrorMessage = "Sensor status code must be between 1 and 50 characters.")]
     public required string SensorStatusCode { get; set; }
 
-    [Required(ErrorMessage = "Measurement unit code is required.")]
-    [StringLength(16, MinimumLength = 3, ErrorMessage = "Measurement unit code must be between 1 and 16 characters.")]
-    public required string MeasurementUnitCode { get; set; }
-
     [Required(ErrorMessage = "Sensor identifier is required.")]
     [StringLength(255, MinimumLength = 1, ErrorMessage = "Sensor identifier must be between 1 and 255 characters.")]
     public required string SensorIdentifier { get; set; }

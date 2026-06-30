@@ -21,7 +21,6 @@ public class SensorService(FleetDbContext context) : ISensorService
         return await context.Sensors
             .Include(s => s.SensorType)
             .Include(s => s.Status)
-            .Include(s => s.MeasurementUnit)
             .Include(s => s.Device)
             .Select(s => ToDto(s))
             .ToListAsync();
@@ -37,7 +36,6 @@ public class SensorService(FleetDbContext context) : ISensorService
         var sensor = await context.Sensors
             .Include(s => s.SensorType)
             .Include(s => s.Status)
-            .Include(s => s.MeasurementUnit)
             .Include(s => s.Device)
             .FirstOrDefaultAsync(s => s.Id == id);
         return sensor is null ? null : ToDto(sensor);
@@ -61,9 +59,6 @@ public class SensorService(FleetDbContext context) : ISensorService
         var sensorStatus = await GetSensorStatusByCodeAsync(createSensorDto.SensorStatusCode)
             ?? throw new ValidationException($"Sensor status with code '{createSensorDto.SensorStatusCode}' not found.");
 
-        var measurementUnit = await GetMeasurementUnitByCodeAsync(createSensorDto.MeasurementUnitCode)
-            ?? throw new KeyNotFoundException($"Measurement unit with code '{createSensorDto.MeasurementUnitCode}' not found.");
-
         Device? device = null;
         if (createSensorDto.DeviceIdentifier is not null)
         {
@@ -77,9 +72,10 @@ public class SensorService(FleetDbContext context) : ISensorService
             StationId = station.Id,
             DeviceId = device?.Id,
             SensorStatusId = sensorStatus.Id,
-            MeasurementUnitId = measurementUnit.Id,
             SensorIdentifier = createSensorDto.SensorIdentifier,
-            CalibrationDate = createSensorDto.CalibrationDate
+            CalibrationDate = createSensorDto.CalibrationDate,
+            SensorType = sensorType,
+            Status = sensorStatus,
         };
 
         context.Sensors.Add(sensor);
@@ -109,9 +105,6 @@ public class SensorService(FleetDbContext context) : ISensorService
         var sensorStatus = await GetSensorStatusByCodeAsync(sensorDto.SensorStatusCode)
             ?? throw new ValidationException($"Sensor status with code '{sensorDto.SensorStatusCode}' not found.");
 
-        var measurementUnit = await GetMeasurementUnitByCodeAsync(sensorDto.MeasurementUnitCode)
-            ?? throw new KeyNotFoundException($"Measurement unit with code '{sensorDto.MeasurementUnitCode}' not found.");
-
         Device? device = null;
         if (sensorDto.DeviceIdentifier is not null)
         {
@@ -123,7 +116,6 @@ public class SensorService(FleetDbContext context) : ISensorService
         sensor.StationId = station.Id;
         sensor.DeviceId = device?.Id;
         sensor.SensorStatusId = sensorStatus.Id;
-        sensor.MeasurementUnitId = measurementUnit.Id;
         sensor.SensorIdentifier = sensorDto.SensorIdentifier;
         sensor.CalibrationDate = sensorDto.CalibrationDate;
         sensor.UpdatedAtUtc = DateTime.UtcNow;
@@ -168,12 +160,6 @@ public class SensorService(FleetDbContext context) : ISensorService
             .FirstOrDefaultAsync(s => s.TypeName == sensorTypeName);
     }
 
-    public async Task<MeasurementUnit?> GetMeasurementUnitByCodeAsync(string code)
-    {
-        return await context.MeasurementUnits
-            .FirstOrDefaultAsync(m => m.Code == code);
-    }
-
     public async Task<Device?> GetDeviceByIdentifierAsync(string deviceIdentifier)
     {
         return await context.Devices
@@ -189,7 +175,6 @@ public class SensorService(FleetDbContext context) : ISensorService
             StationId = sensor.StationId,
             DeviceIdentifier = sensor.Device?.DeviceIdentifier,
             SensorStatusCode = sensor.Status?.Code ?? string.Empty,
-            MeasurementUnitCode = sensor.MeasurementUnit.Code,
             SensorIdentifier = sensor.SensorIdentifier,
             CalibrationDate = sensor.CalibrationDate,
             CreatedAtUtc = sensor.CreatedAtUtc,

@@ -84,7 +84,6 @@ public class StationService(FleetDbContext context) : IStationService
             .Where(s => s.StationId == stationId)
             .Include(s => s.SensorType)
             .Include(s => s.Status)
-            .Include(s => s.MeasurementUnit)
             .Include(s => s.Device)
             .Select(s => SensorService.ToDto(s))
             .ToListAsync();
