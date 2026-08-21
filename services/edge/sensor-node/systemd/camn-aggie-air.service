@@ -1,0 +1,14 @@
+[Unit]
+Description=CAMN-Aggie-Air-Service
+
+[Service]
+ExecStart=/home/zero/camn-sensor-network/services/edge/sensor-node/.venv/bin/python /home/zero/camn-sensor-network/services/edge/sensor-node/src/sensors/aggie_air.py
+
+Restart=always
+
+WorkingDirectory=/home/zero/camn-sensor-network/services/edge/
+
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

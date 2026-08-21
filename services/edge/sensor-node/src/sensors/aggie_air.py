@@ -76,7 +76,7 @@ def loop(aggieair_sensor, output_folder_path):
             if line:
                 print(f"Received: {line}")
                 timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                filename = 'voc_{}.csv'.format((datetime.now()).strftime('%Y-%m-%d'))
+                filename = 'aggieair_{}.csv'.format((datetime.now()).strftime('%Y-%m-%d'))
                 dated_filename = os.path.join(output_folder_path, filename)
                 with open(dated_filename, 'a', encoding='utf-8') as f:
                     # Record = RPi timestamp, deviceID, AggieAir timestamp, WE, AE, VOCppb
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     device = DEVICES[0]
     print(f"Using AggieAir device: {device}")
     VOCSENSOR = AggieAir(device)
-    OUTPUT_PATH = './sensor_logs'
+    OUTPUT_PATH = './logs'
     try:
         loop(VOCSENSOR, OUTPUT_PATH)
     except KeyboardInterrupt:
