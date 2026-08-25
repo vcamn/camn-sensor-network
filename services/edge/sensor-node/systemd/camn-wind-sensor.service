@@ -1,5 +1,5 @@
 [Unit]
-Description=CAMN-Aggie-Air-Service
+Description=CAMN-Wind-Sensor-Service
 
 [Service]
 User=zero
@@ -7,7 +7,7 @@ Group=zero
 
 WorkingDirectory=/home/zero/camn-sensor-network/services/edge/
 ExecStart=/home/zero/camn-sensor-network/services/edge/sensor-node/.venv/bin/python \
-    /home/zero/camn-sensor-network/services/edge/sensor-node/src/sensors/aggie_air.py \
+    /home/zero/camn-sensor-network/services/edge/sensor-node/src/sensors/wind_sensor.py \
     --path /home/zero/camn-sensor-network/services/edge/logs
 
 Restart=always

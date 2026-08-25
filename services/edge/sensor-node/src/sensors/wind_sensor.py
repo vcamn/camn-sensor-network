@@ -101,7 +101,7 @@ def loop(wind_sensor, output_folder_path):
                     wd = []
                     last_write = timestamp
                     timestamp_formatted = timestamp.strftime('%Y-%m-%d %H:%M:%S')
-                    filename = 'wind_{}.csv'.format((datetime.now()).strftime('%Y-%m-%d'))
+                    filename = 'LTwind_{}.csv'.format((datetime.now()).strftime('%Y-%m-%d'))
                     dated_filename = os.path.join(output_folder_path, filename)
                     with open(dated_filename, 'a', encoding='utf-8') as f:
                         f.write(f"{timestamp_formatted},{wd_mean},{u_mean},{v_mean}\n")
@@ -128,7 +128,7 @@ if __name__ == '__main__':
     device = DEVICES[0]
     print(f"Using wind sensor device: {device}")
     WINDSENSOR = WindSensor(device)
-    OUTPUT_PATH = './sensor_logs'
+    OUTPUT_PATH = './logs'
     try:
         loop(WINDSENSOR, OUTPUT_PATH)
     except KeyboardInterrupt:
