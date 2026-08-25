@@ -1,0 +1,16 @@
+[Unit]
+Description=CAMN-Run-Purple-Air
+
+[Service]
+User=zero
+Group=zero
+
+WorkingDirectory=/home/zero/camn-sensor-network/services/edge/
+ExecStart=/home/zero/camn-sensor-network/services/edge/sensor-node/.venv/bin/python /home/zero/camn-sensor-network/services/edge/sensor-node/src/sensors/purple_air.py
+
+
+Restart=always
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target
