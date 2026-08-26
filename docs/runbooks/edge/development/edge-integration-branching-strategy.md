@@ -10,8 +10,9 @@ This intentionally lightweight strategy supports the current workflow:
 Local development (WSL + uv)
     -> edge-integration
     -> Raspberry Pi Zero hardware integration testing
-    -> pull request
+    -> pull request (squash merge)
     -> main
+    -> realign edge-integration with main
 ```
 
 ## Branches
@@ -34,6 +35,8 @@ Although `edge-integration` is intended for the edge collector, it remains a bra
 - Develop and run non-hardware tests locally before deploying to the Pi.
 - Commit `pyproject.toml` and `uv.lock` together whenever dependencies change.
 - Promote changes to `main` only after hardware integration testing succeeds.
+- Use **Squash and merge** for pull requests from `edge-integration` into `main`.
+- Explicitly realign `edge-integration` with `main` after each squash merge.
 - Merge validated work promptly to minimize divergence between branches.
 - Use short-lived feature branches only when concurrent or higher-risk work makes them useful.
 
@@ -148,23 +151,78 @@ After successful Raspberry Pi validation:
 1. Push any remaining changes to `edge-integration`.
 2. Open a pull request from `edge-integration` into `main`.
 3. Confirm that the pull request contains only the intended edge collector and documentation changes.
-4. Merge the pull request after review.
+4. Select **Squash and merge** after review.
+5. Confirm that the pull request was merged successfully before realigning the integration branch.
 
 Do not merge changes that failed hardware integration testing.
 
-## Resynchronizing `edge-integration`
+## Realigning `edge-integration` After a Squash Merge
 
-After the pull request is merged, update the local integration branch from `main`:
+Squash merging creates a new commit on `main` rather than preserving the individual commit IDs from `edge-integration`. The two branches therefore have different histories, and the following fast-forward merge will normally fail:
+
+```bash
+git merge --ff-only main
+```
+
+After confirming that the pull request was successfully squash merged and that `edge-integration` contains no additional unmerged work, explicitly realign it with `main`.
+
+### 1. Update `main`
 
 ```bash
 git switch main
 git pull --ff-only origin main
-git switch edge-integration
-git merge --ff-only main
-git push origin edge-integration
 ```
 
-If `--ff-only` fails, the branches have diverged. Review the branch history and resolve the divergence locally rather than forcing an update from the Raspberry Pi.
+### 2. Confirm a clean integration branch
+
+```bash
+git switch edge-integration
+git status --short
+```
+
+No output indicates that the working tree is clean. Stop and review any unexpected changes before continuing.
+
+### 3. Create a recovery branch
+
+Create a temporary local pointer to the current integration branch before resetting it:
+
+```bash
+git branch "backup/edge-integration-before-realign-$(date +%Y%m%d-%H%M%S)"
+```
+
+The date suffix makes the recovery branch easy to identify later.
+
+### 4. Realign and update the remote branch
+
+```bash
+git reset --hard main
+git push --force-with-lease origin edge-integration
+```
+
+`git reset --hard main` deliberately makes the local `edge-integration` branch identical to `main`. `--force-with-lease` then updates the remote branch while refusing to overwrite unexpected remote commits.
+
+Do not use plain `--force`. Do not perform this reset from the Raspberry Pi.
+
+### 5. Verify the branch alignment
+
+```bash
+git rev-parse main
+git rev-parse edge-integration
+git rev-parse origin/edge-integration
+```
+
+All three commands should return the same commit hash. The next edge development cycle can now begin from the newly aligned `edge-integration` branch.
+
+Keep the recovery branch until the alignment is verified. It can be deleted later with:
+
+```bash
+git branch --list 'backup/edge-integration-before-realign-*'
+git branch -D backup/edge-integration-before-realign-YYYYMMDD-HHMMSS
+```
+
+Replace `YYYYMMDD-HHMMSS` with the timestamp shown by the list command. The forced local deletion is necessary because squash merging does not preserve the original integration-branch commit IDs. Delete the backup only after verifying the realignment and merged content.
+
+This workflow requires the remote repository to permit force pushes to `edge-integration`. Keep force pushes disabled for `main`.
 
 ## Returning the Raspberry Pi to `main`
 
@@ -211,4 +269,3 @@ Then restore the expected paths if necessary:
 ```bash
 git sparse-checkout set services/edge docs/runbooks/edge
 ```
-
