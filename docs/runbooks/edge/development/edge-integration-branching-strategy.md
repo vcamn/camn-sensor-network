@@ -211,7 +211,28 @@ git rev-parse edge-integration
 git rev-parse origin/edge-integration
 ```
 
-All three commands should return the same commit hash. The next edge development cycle can now begin from the newly aligned `edge-integration` branch.
+All three commands should return the same commit hash. 
+
+### 6. Realign and update the local branch directly on the Raspberry Pi Zero
+```bash
+git switch edge-integration # (if not aleady on the branch)
+git fetch origin
+git reset --hard origin/edge-integration
+```
+
+### 7. Verify alignment
+```bash
+git rev-parse HEAD
+git rev-parse origin/edge-integration
+```
+
+Both hashes should match. Then continue:
+```bash
+cd services/edge/sensor-node
+uv sync --locked
+```
+
+The next edge development cycle can now begin from the newly aligned `edge-integration` branch.
 
 Keep the recovery branch until the alignment is verified. It can be deleted later with:
 
