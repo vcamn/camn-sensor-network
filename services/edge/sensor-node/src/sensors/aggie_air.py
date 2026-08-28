@@ -20,6 +20,11 @@ from datetime import datetime
 import os
 import serial
 
+try:
+    from .parsers import parse_aggie_air_line
+except ImportError:
+    from parsers import parse_aggie_air_line
+
 class AggieAir(object):
     ''' Class for reading wind sensor data from a serial port. '''
     def __init__(self, device_name):
@@ -38,9 +43,7 @@ class AggieAir(object):
         except UnicodeDecodeError as ex:
             print(f'Failed to convert line to utf-8 because {ex}.\n Line: {encoded_line}')
             return ''
-        if not line or not line[0].isdigit():
-            return ''
-        return line
+        return parse_aggie_air_line(line) or ''
     
     def close(self):
         ''' Close the serial connection '''
