@@ -20,6 +20,11 @@ from datetime import datetime
 import os
 import serial
 
+try:
+    from .parsers import WindReading, parse_wind_line
+except ImportError:
+    from parsers import WindReading, parse_wind_line
+
 class WindSensor(object):
     ''' Class for reading wind sensor data from a serial port. '''
     def __init__(self, device_name):
@@ -38,11 +43,7 @@ class WindSensor(object):
         except UnicodeDecodeError as ex:
             print(f'Failed to convert line to utf-8 because {ex}.\n Line: {encoded_line}')
             return ''
-        # Remove all whitespace in the line
-        line = ''.join(line.split())
-        if not line or not line[0].isdigit():
-            return ''
-        return line
+        return parse_wind_line(line)
     
     def close(self):
         ''' Close the serial connection '''
@@ -79,9 +80,9 @@ def loop(wind_sensor, output_folder_path):
     try:
         while True:
             # Read line: deviceId, u, wd, v
-            line = wind_sensor.read()
-            if line:
-                print(f"Received: {line}")
+            reading: WindReading | None = wind_sensor.read()
+            if reading:
+                print(f"Received: {reading}")
                 
                 timestamp = datetime.now()
                 time_difference = (timestamp - last_write).seconds
@@ -107,13 +108,11 @@ def loop(wind_sensor, output_folder_path):
                         f.write(f"{timestamp_formatted},{wd_mean},{u_mean},{v_mean}\n")
                 else:
                     try:
-                        parts = line.split(',')
-                        if len(parts) >= 4:
-                            u.append(float(parts[1]))
-                            wd.append(float(parts[2]))
-                            v.append(float(parts[3]))
+                        u.append(reading.u)
+                        wd.append(reading.wd)
+                        v.append(reading.v)
                     except ValueError as ve:
-                        print(f"Value error: {ve}. Line: {line}")
+                        print(f"Value error: {ve}. Line: {reading}")
     except KeyboardInterrupt:
         print("Stopped by user.")
     finally:

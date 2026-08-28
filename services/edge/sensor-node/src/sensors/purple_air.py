@@ -19,6 +19,11 @@ import re
 from glob import glob
 from datetime import datetime
 
+try:
+    from .parsers import extract_purple_air_line, is_purple_air_minute_data
+except ImportError:
+    from parsers import extract_purple_air_line, is_purple_air_minute_data
+
 class PurpleAir(object):
     def __init__(self, device_name):
         device_path = os.path.join('/dev/', device_name)
@@ -51,16 +56,7 @@ class PurpleAir(object):
         except UnicodeDecodeError as ex:
             print('Failed to convert line to utf-8 because {}.\n Line: {}'.format(ex, encoded_line))
             return ''
-        # break the line into pieces
-        parts = line.split('\r')
-        # many lines have an extra '\n' as the last item because they are ended with \r\n so strip it
-        if parts[-1] == '\n':
-            parts = parts[:-1]
-        # since we are splitting on '\r' (reset cursor), we only need to keep the last text section
-        if parts:
-            return parts[-1]
-        # else:
-        return ''
+        return extract_purple_air_line(line)
 
     def close(self):
         if self.serial_device:
@@ -70,17 +66,7 @@ class PurpleAir(object):
     @staticmethod
     def dataline_is_minute_data(dataline):
         ''' Checks if dataline has the right format for a line of minute data '''
-        reader = csv.reader([dataline])
-        parsed_line = reader.__next__()
-        if not len(parsed_line) > 35:
-            # print(len(parsed_line))
-            return False
-        # for a spot check, check that the second column is a (possibly badly formatted) MAC address
-        #  note: the device ID is the MAC address but missing the 0's
-        mac_address = parsed_line[1]
-        if re.match(r'([0-9a-fA-F]?[0-9a-fA-F]?:){5}([0-9a-fA-F]?[0-9a-fA-F]?)', mac_address):
-            return True
-        return False
+        return is_purple_air_minute_data(dataline)
 
     @staticmethod
     def find_purpleairs():
