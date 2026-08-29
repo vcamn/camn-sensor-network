@@ -21,14 +21,20 @@ from datetime import datetime
 
 try:
     from .parsers import extract_purple_air_line, is_purple_air_minute_data
+    from .transport import LineSource, ReplayLineSource, SerialLineSource
 except ImportError:
     from parsers import extract_purple_air_line, is_purple_air_minute_data
+    from transport import LineSource, ReplayLineSource, SerialLineSource
 
 class PurpleAir(object):
-    def __init__(self, device_name):
-        device_path = os.path.join('/dev/', device_name)
-        print("Opening serial connection to {}".format(device_path))
-        self.serial_device = serial.Serial(device_path, 115200)
+    def __init__(self, device_name=None, line_source: LineSource | None = None):
+        if line_source is None:
+            if not device_name:
+                raise ValueError("device_name is required when line_source is not supplied")
+            device_path = os.path.join('/dev/', device_name)
+            print("Opening serial connection to {}".format(device_path))
+            line_source = SerialLineSource(device_path, 115200)
+        self.line_source = line_source
         self.latitude = 0.0
         self.longitude = 0.0
         self.elevation = 0.0
@@ -49,7 +55,8 @@ class PurpleAir(object):
 
     def read(self):
         ''' blocking.  Reads the next complete line from the serial port device. '''
-        encoded_line = self.serial_device.readline()
+        encoded_line = self.line_source.readline()
+        self.at_eof = encoded_line == b''
         # Decode bytes into a string
         try:
             line = encoded_line.decode("utf-8")
@@ -59,9 +66,9 @@ class PurpleAir(object):
         return extract_purple_air_line(line)
 
     def close(self):
-        if self.serial_device:
+        if self.line_source:
             print("Closing serial connection")
-            self.serial_device.close()
+            self.line_source.close()
 
     @staticmethod
     def dataline_is_minute_data(dataline):
@@ -93,12 +100,14 @@ def load_device(args_device, device_list):
         print("Defaulting to first device: {}".format(device))
     return PurpleAir(device)
 
-def loop(purpleair, output_folder_path): #, upload_data):
+def loop(purpleair, output_folder_path, stop_on_eof=False): #, upload_data):
     ''' loop that reads data from device. '''
     if not os.path.exists(output_folder_path):
         os.makedirs(output_folder_path)
     while True:
         dataline = purpleair.read()
+        if stop_on_eof and purpleair.at_eof:
+            break
         # now = datetime.now()
         now = int(time.time())
         if PurpleAir.dataline_is_minute_data(dataline):
@@ -125,20 +134,26 @@ if __name__ == "__main__":
     PARSER.add_argument('-e', '--elevation', action='store', default=1.01, help="Default set to Davis")
     PARSER.add_argument('-c', '--configpath', action='store', default=None, help="Not tested")
     PARSER.add_argument('-u', '--uploaddata', action='store_true', default=False, help="Not implemented")
+    PARSER.add_argument('--input-file', default=None, help="Replay raw sensor lines from a local file")
     ARGS = PARSER.parse_args()
     # Find the available devices
-    DEVICES = PurpleAir.find_purpleairs()
-    if not DEVICES and not ARGS.device:
+    DEVICES = [] if ARGS.input_file else PurpleAir.find_purpleairs()
+    if not DEVICES and not ARGS.device and not ARGS.input_file:
         print("Failed to find any Purple Air devices.")
         exit()
     # if only going to list the devices, exit here
     if ARGS.listonly:
         print("Devices: {}".format(DEVICES))
         exit()
-    PURPLEAIR = load_device(ARGS.device, DEVICES)
+    line_source = ReplayLineSource(ARGS.input_file) if ARGS.input_file else None
+    if line_source:
+        print("Replaying Purple Air input from {}".format(ARGS.input_file))
+        PURPLEAIR = PurpleAir(line_source=line_source)
+    else:
+        PURPLEAIR = load_device(ARGS.device, DEVICES)
     PURPLEAIR.load_settings(ARGS.latitude, ARGS.longitude, ARGS.elevation, ARGS.configpath)
     try:
-        loop(PURPLEAIR, ARGS.path) #, ARGS.uploaddata)
+        loop(PURPLEAIR, ARGS.path, stop_on_eof=bool(ARGS.input_file)) #, ARGS.uploaddata)
     except KeyboardInterrupt:
         print("Program killed")
     finally:

@@ -5,6 +5,7 @@ NEED TO FORMAT THE AVERAGES TO TWO DECIMAL PLACES
 '''
 
 # -*- coding: utf-8 -*-
+import argparse
 try:
     import serial
 except ImportError:
@@ -22,21 +23,26 @@ import serial
 
 try:
     from .parsers import WindReading, parse_wind_line
+    from .transport import LineSource, ReplayLineSource, SerialLineSource
 except ImportError:
     from parsers import WindReading, parse_wind_line
+    from transport import LineSource, ReplayLineSource, SerialLineSource
 
 class WindSensor(object):
     ''' Class for reading wind sensor data from a serial port. '''
-    def __init__(self, device_name):
-        device_path = os.path.join('/dev/', device_name)
-        print(f"Opening serial connection to {device_path}")
-        self.serial_device = serial.Serial(device_path, 9600)
-        self.serial_device.reset_input_buffer()
-        self.serial_device.reset_output_buffer()
+    def __init__(self, device_name=None, line_source: LineSource | None = None):
+        if line_source is None:
+            if not device_name:
+                raise ValueError("device_name is required when line_source is not supplied")
+            device_path = os.path.join('/dev/', device_name)
+            print(f"Opening serial connection to {device_path}")
+            line_source = SerialLineSource(device_path, 9600)
+        self.line_source = line_source
         
     def read(self):
         ''' blocking.  Reads the next complete line from the serial port device. '''
-        encoded_line = self.serial_device.readline()
+        encoded_line = self.line_source.readline()
+        self.at_eof = encoded_line == b''
         # Decode bytes into a string
         try:
             line = encoded_line.decode("utf-8", errors='replace')
@@ -47,9 +53,9 @@ class WindSensor(object):
     
     def close(self):
         ''' Close the serial connection '''
-        if self.serial_device:
+        if self.line_source:
             print("Closing serial connection")
-            self.serial_device.close()
+            self.line_source.close()
 
 
     @staticmethod
@@ -68,7 +74,7 @@ class WindSensor(object):
         # make sure devices are in alphabetical order
         return sorted(devices)
 
-def loop(wind_sensor, output_folder_path):
+def loop(wind_sensor, output_folder_path, stop_on_eof=False):
     ''' Main loop for reading data from the wind sensor and writing to a file. '''
     # Initiate sensor reading arrays
     u = []
@@ -81,6 +87,8 @@ def loop(wind_sensor, output_folder_path):
         while True:
             # Read line: deviceId, u, wd, v
             reading: WindReading | None = wind_sensor.read()
+            if stop_on_eof and wind_sensor.at_eof:
+                break
             if reading:
                 print(f"Received: {reading}")
                 
@@ -119,17 +127,26 @@ def loop(wind_sensor, output_folder_path):
         wind_sensor.close()
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Log readings from a wind sensor')
+    parser.add_argument('-d', '--device', default='', help='Device name, if not replaying input')
+    parser.add_argument('-p', '--path', default='./logs', help='Path for saving the log file')
+    parser.add_argument('--input-file', help='Replay raw sensor lines from a local file')
+    args = parser.parse_args()
+
     # Find the available wind sensors
-    DEVICES = WindSensor.find_wind_sensors()
-    if not DEVICES:
+    DEVICES = [] if args.input_file else WindSensor.find_wind_sensors()
+    if not DEVICES and not args.input_file and not args.device:
         print("No wind sensors found.")
         exit(1)
-    device = DEVICES[0]
-    print(f"Using wind sensor device: {device}")
-    WINDSENSOR = WindSensor(device)
-    OUTPUT_PATH = './logs'
+    device = args.device or (DEVICES[0] if DEVICES else None)
+    line_source = ReplayLineSource(args.input_file) if args.input_file else None
+    if line_source:
+        print(f"Replaying wind sensor input from {args.input_file}")
+    else:
+        print(f"Using wind sensor device: {device}")
+    WINDSENSOR = WindSensor(device, line_source=line_source)
     try:
-        loop(WINDSENSOR, OUTPUT_PATH)
+        loop(WINDSENSOR, args.path, stop_on_eof=bool(args.input_file))
     except KeyboardInterrupt:
         print("Exiting program.")
     finally:
