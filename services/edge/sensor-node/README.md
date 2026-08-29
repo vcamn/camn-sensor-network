@@ -240,6 +240,28 @@ ExecStart=/home/<user>/camn-sensor-network/services/edge/sensor-node/.venv/bin/p
 Exact paths and service definitions will be finalized as the collector
 entry-point/runtime design is completed.
 
+### Hardware-Free Replay
+
+The sensor scripts can replay raw line data from a local file. Replay
+does not perform USB discovery, open `/dev` devices, or require sensor
+hardware. It stops automatically at end-of-file.
+
+``` bash
+uv run python src/sensors/aggie_air.py --input-file tests/fixtures/aggie_air_sample.log --path ./logs
+uv run python src/sensors/wind_sensor.py --input-file tests/fixtures/wind_sample.log --path ./logs
+uv run python src/sensors/purple_air.py --input-file tests/fixtures/purple_air_sample.log --path ./logs
+```
+
+Replay files contain raw sensor bytes, so preserve the line endings
+used by the sensor. Use sanitized or synthetic data for committed
+fixtures; do not commit credentials or identifying device captures.
+
+The replay transport and reader tests can be run with:
+
+``` bash
+uv run pytest tests/test_transports.py tests/test_sensor_replay.py -q
+```
+
 ## Raspberry Pi Hardware Integration Testing
 
 WSL 2 is the primary local development environment, but the Raspberry Pi
