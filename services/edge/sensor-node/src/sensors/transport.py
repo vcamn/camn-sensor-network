@@ -32,6 +32,8 @@ class SerialDevice(Protocol):
 
     def reset_output_buffer(self) -> None: ...
 
+    def open(self) -> None: ...
+
     def readline(self) -> bytes: ...
 
     def close(self) -> None: ...
@@ -55,6 +57,7 @@ class SerialLineSource:
         self._serial_device.rts = False
         self._serial_device.dtr = False
         self._serial_device.port = device_path
+        self._serial_device.open()
         self._serial_device.reset_input_buffer()
         self._serial_device.reset_output_buffer()
 

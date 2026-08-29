@@ -15,6 +15,7 @@ class FakeSerial:
         self.timeout = timeout
         self.rts = True
         self.dtr = True
+        self.is_open = False
         self.opened_with_lines_low = False
         self.reset_input_buffer_calls = 0
         self.reset_output_buffer_calls = 0
@@ -30,18 +31,30 @@ class FakeSerial:
         if self.rts or self.dtr:
             raise AssertionError("serial port opened before RTS/DTR were lowered")
         self._port = value
+
+    def open(self) -> None:
+        if self._port is None:
+            raise AssertionError("serial port opened without a configured path")
+        if self.rts or self.dtr:
+            raise AssertionError("serial port opened before RTS/DTR were lowered")
+        self.is_open = True
         self.opened_with_lines_low = True
 
     def reset_input_buffer(self) -> None:
+        if not self.is_open:
+            raise AssertionError("input buffer reset before serial port opened")
         self.reset_input_buffer_calls += 1
 
     def reset_output_buffer(self) -> None:
+        if not self.is_open:
+            raise AssertionError("output buffer reset before serial port opened")
         self.reset_output_buffer_calls += 1
 
     def readline(self) -> bytes:
         return next(self.lines, b"")
 
     def close(self) -> None:
+        self.is_open = False
         self.close_calls += 1
 
 
