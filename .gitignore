@@ -59,6 +59,7 @@ cover/
 
 # Django stuff:
 *.log
+!services/edge/sensor-node/tests/fixtures/*.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -763,4 +764,7 @@ rsconnect/
 # Ignore all CSV files in the logs directory
 **/SensorNetwork/sensor_logs/*.csv
 # services/sensor-node/logs/*.csv
+
+# Keep sanitized sensor replay fixtures under version control
+!services/edge/sensor-node/tests/fixtures/*.log
 

@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from pathlib import Path
-from typing import BinaryIO, Callable, Protocol
+from typing import BinaryIO, Protocol
 
 import serial
 
@@ -21,6 +21,24 @@ class LineSource(Protocol):
         ...
 
 
+class SerialDevice(Protocol):
+    """Subset of pyserial required by the serial line source."""
+
+    port: str | None
+    rts: bool
+    dtr: bool
+
+    def reset_input_buffer(self) -> None: ...
+
+    def reset_output_buffer(self) -> None: ...
+
+    def open(self) -> None: ...
+
+    def readline(self) -> bytes: ...
+
+    def close(self) -> None: ...
+
+
 class SerialLineSource:
     """Line source backed by a pyserial connection."""
 
@@ -29,13 +47,17 @@ class SerialLineSource:
         device_path: str,
         baudrate: int,
         timeout: float | None = None,
-        serial_factory: Callable[..., LineSource] = serial.Serial,
+        serial_factory: Callable[..., SerialDevice] = serial.Serial,
     ) -> None:
         self._serial_device = serial_factory(
-            device_path,
+            port=None,
             baudrate=baudrate,
             timeout=timeout,
         )
+        self._serial_device.rts = False
+        self._serial_device.dtr = False
+        self._serial_device.port = device_path
+        self._serial_device.open()
         self._serial_device.reset_input_buffer()
         self._serial_device.reset_output_buffer()
 
@@ -60,7 +82,7 @@ class ReplayLineSource:
         self._source_file: BinaryIO | None = None
 
         if isinstance(source, (str, Path)):
-            self._source_file = open(source, "rb")
+            self._source_file = Path(source).open("rb")
             self._iterator = self._source_file
             self._close_source = True
         elif hasattr(source, "readline"):

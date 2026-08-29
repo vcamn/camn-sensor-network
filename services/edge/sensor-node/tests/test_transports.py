@@ -9,42 +9,70 @@ from sensors.transport import ReplayLineSource, SerialLineSource
 
 
 class FakeSerial:
-    def __init__(self, device_path: str, *, baudrate: int, timeout: float | None):
-        self.device_path = device_path
+    def __init__(self, *, port: str | None, baudrate: int, timeout: float | None):
+        self._port = port
         self.baudrate = baudrate
         self.timeout = timeout
+        self.rts = True
+        self.dtr = True
+        self.is_open = False
+        self.opened_with_lines_low = False
         self.reset_input_buffer_calls = 0
         self.reset_output_buffer_calls = 0
         self.close_calls = 0
         self.lines = iter([b"one\r\n", b"two\n"])
 
+    @property
+    def port(self) -> str | None:
+        return self._port
+
+    @port.setter
+    def port(self, value: str) -> None:
+        if self.rts or self.dtr:
+            raise AssertionError("serial port opened before RTS/DTR were lowered")
+        self._port = value
+
+    def open(self) -> None:
+        if self._port is None:
+            raise AssertionError("serial port opened without a configured path")
+        if self.rts or self.dtr:
+            raise AssertionError("serial port opened before RTS/DTR were lowered")
+        self.is_open = True
+        self.opened_with_lines_low = True
+
     def reset_input_buffer(self) -> None:
+        if not self.is_open:
+            raise AssertionError("input buffer reset before serial port opened")
         self.reset_input_buffer_calls += 1
 
     def reset_output_buffer(self) -> None:
+        if not self.is_open:
+            raise AssertionError("output buffer reset before serial port opened")
         self.reset_output_buffer_calls += 1
 
     def readline(self) -> bytes:
         return next(self.lines, b"")
 
     def close(self) -> None:
+        self.is_open = False
         self.close_calls += 1
 
 
 def test_serial_line_source_configures_and_delegates_to_serial():
     devices: list[FakeSerial] = []
 
-    def factory(device_path: str, *, baudrate: int, timeout: float | None) -> FakeSerial:
-        device = FakeSerial(device_path, baudrate=baudrate, timeout=timeout)
+    def factory(*, port: str | None, baudrate: int, timeout: float | None) -> FakeSerial:
+        device = FakeSerial(port=port, baudrate=baudrate, timeout=timeout)
         devices.append(device)
         return device
 
     source = SerialLineSource("/dev/ttyUSB0", 9600, timeout=2, serial_factory=factory)
 
     assert source.readline() == b"one\r\n"
-    assert devices[0].device_path == "/dev/ttyUSB0"
+    assert devices[0].port == "/dev/ttyUSB0"
     assert devices[0].baudrate == 9600
     assert devices[0].timeout == 2
+    assert devices[0].opened_with_lines_low is True
     assert devices[0].reset_input_buffer_calls == 1
     assert devices[0].reset_output_buffer_calls == 1
 
