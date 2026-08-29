@@ -9,14 +9,28 @@ from sensors.transport import ReplayLineSource, SerialLineSource
 
 
 class FakeSerial:
-    def __init__(self, device_path: str, *, baudrate: int, timeout: float | None):
-        self.device_path = device_path
+    def __init__(self, *, port: str | None, baudrate: int, timeout: float | None):
+        self._port = port
         self.baudrate = baudrate
         self.timeout = timeout
+        self.rts = True
+        self.dtr = True
+        self.opened_with_lines_low = False
         self.reset_input_buffer_calls = 0
         self.reset_output_buffer_calls = 0
         self.close_calls = 0
         self.lines = iter([b"one\r\n", b"two\n"])
+
+    @property
+    def port(self) -> str | None:
+        return self._port
+
+    @port.setter
+    def port(self, value: str) -> None:
+        if self.rts or self.dtr:
+            raise AssertionError("serial port opened before RTS/DTR were lowered")
+        self._port = value
+        self.opened_with_lines_low = True
 
     def reset_input_buffer(self) -> None:
         self.reset_input_buffer_calls += 1
@@ -34,17 +48,18 @@ class FakeSerial:
 def test_serial_line_source_configures_and_delegates_to_serial():
     devices: list[FakeSerial] = []
 
-    def factory(device_path: str, *, baudrate: int, timeout: float | None) -> FakeSerial:
-        device = FakeSerial(device_path, baudrate=baudrate, timeout=timeout)
+    def factory(*, port: str | None, baudrate: int, timeout: float | None) -> FakeSerial:
+        device = FakeSerial(port=port, baudrate=baudrate, timeout=timeout)
         devices.append(device)
         return device
 
     source = SerialLineSource("/dev/ttyUSB0", 9600, timeout=2, serial_factory=factory)
 
     assert source.readline() == b"one\r\n"
-    assert devices[0].device_path == "/dev/ttyUSB0"
+    assert devices[0].port == "/dev/ttyUSB0"
     assert devices[0].baudrate == 9600
     assert devices[0].timeout == 2
+    assert devices[0].opened_with_lines_low is True
     assert devices[0].reset_input_buffer_calls == 1
     assert devices[0].reset_output_buffer_calls == 1
 
