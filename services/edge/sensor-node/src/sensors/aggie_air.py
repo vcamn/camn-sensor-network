@@ -41,7 +41,12 @@ class AggieAir(object):
         
     def read(self):
         ''' blocking.  Reads the next complete line from the serial port device. '''
-        encoded_line = self.line_source.readline()
+        try:
+            encoded_line = self.line_source.readline()
+        except (OSError, serial.SerialException) as ex:
+            print(f"Serial read error for AggieAir: {ex}. Treating as disconnected and retrying.")
+            return ''
+
         self.at_eof = encoded_line == b''
         # Decode bytes into a string
         try:

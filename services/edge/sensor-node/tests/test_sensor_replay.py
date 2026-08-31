@@ -75,3 +75,22 @@ def test_purple_air_loop_writes_valid_replay_data_and_stops_at_eof(tmp_path):
     output_files = list(tmp_path.glob("purpleair_*.csv"))
     assert len(output_files) == 1
     assert ",timestamp,AA:B:C:D:E:F," in output_files[0].read_text(encoding="utf-8")
+
+def test_aggie_air_read_handles_transient_serial_disconnects():
+    class FlakySource:
+        def __init__(self):
+            self.calls = 0
+
+        def readline(self):
+            self.calls += 1
+            if self.calls == 1:
+                return b"123,7,8\n"
+            raise OSError("device disconnected")
+
+        def close(self):
+            pass
+
+    sensor = AggieAir(line_source=FlakySource())
+
+    assert sensor.read() == "123,7,8\n"
+    assert sensor.read() == ""
