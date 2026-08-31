@@ -50,6 +50,20 @@ def test_aggie_air_loop_writes_replay_data_and_stops_at_eof(tmp_path):
     assert output_files[0].read_text(encoding="utf-8").endswith(",123,payload\n")
 
 
+def test_aggie_air_find_sensors_falls_back_to_ttyusb_when_cdc_acm_missing(monkeypatch):
+    matches = {
+        "/sys/bus/usb/drivers/cdc_acm/1-*/tty/tty*": [],
+        "/sys/bus/usb/drivers/cp210x/1-*/tty*": [
+            "/sys/bus/usb/drivers/cp210x/1-1.2:1.0/ttyUSB0"
+        ],
+        "/sys/bus/usb/drivers/ch341/1-*/tty*": [],
+    }
+
+    monkeypatch.setattr("sensors.aggie_air.glob", lambda pattern: matches.get(pattern, []))
+
+    assert AggieAir.find_aggieair_sensors() == ["ttyUSB0"]
+
+
 def test_purple_air_loop_writes_valid_replay_data_and_stops_at_eof(tmp_path):
     fields = ["timestamp", "AA:B:C:D:E:F", *(["0"] * 34)]
     sensor = PurpleAir(

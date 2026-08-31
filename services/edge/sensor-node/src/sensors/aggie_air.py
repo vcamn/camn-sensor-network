@@ -60,19 +60,24 @@ class AggieAir(object):
 
     @staticmethod
     def find_aggieair_sensors():
-        ''' Looks for devices that use the same driver as the wind sensor serial to usb chip. '''
-        usb_module_path = '/sys/bus/usb/drivers/cdc_acm/'
-        #/sys/bus/usb/drivers/cdc_acm/1-1.2:1.1/tty/ttyACM0
-        wildcard_path = '1-*/tty/tty*'
-        paths = glob(usb_module_path + wildcard_path)
-        # if we found something, print it out
+        '''Looks for AggieAir serial devices across the common USB-to-serial drivers.'''
+        discovery_paths = [
+            ('cdc_acm', '/sys/bus/usb/drivers/cdc_acm/', '1-*/tty/tty*'),
+            ('cp210x', '/sys/bus/usb/drivers/cp210x/', '1-*/tty*'),
+            ('ch341', '/sys/bus/usb/drivers/ch341/', '1-*/tty*'),
+        ]
+
+        paths = []
+        for _, usb_module_path, wildcard_path in discovery_paths:
+            paths.extend(glob(usb_module_path + wildcard_path))
+
         if paths:
             print("Found AggieAir devices at paths:")
             for path in paths:
                 print("\t" + path)
+
         devices = [os.path.basename(path) for path in paths]
-        # make sure devices are in alphabetical order
-        return sorted(devices)
+        return sorted(set(devices))
 
 def loop(aggieair_sensor, output_folder_path, stop_on_eof=False):
     ''' Main loop for reading data from the wind sensor and writing to a file. '''
