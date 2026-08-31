@@ -57,13 +57,17 @@ class PurpleAir(object):
         ''' blocking.  Reads the next complete line from the serial port device. '''
         encoded_line = self.line_source.readline()
         self.at_eof = encoded_line == b''
-        # Decode bytes into a string
-        try:
-            line = encoded_line.decode("utf-8")
-        except UnicodeDecodeError as ex:
-            print('Failed to convert line to utf-8 because {}.\n Line: {}'.format(ex, encoded_line))
+        if not encoded_line:
             return ''
-        return extract_purple_air_line(line)
+
+        # Serial noise and partial frames can contain arbitrary byte values.
+        # Ignore invalid UTF-8 bytes and discard anything that does not resemble
+        # a valid Purple Air minute-data record.
+        line = encoded_line.decode("utf-8", errors="ignore")
+        payload = extract_purple_air_line(line)
+        if not payload or not PurpleAir.dataline_is_minute_data(payload):
+            return ''
+        return payload
 
     def close(self):
         if self.line_source:

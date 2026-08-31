@@ -5,6 +5,7 @@ from sensors.parsers import (
     parse_aggie_air_line,
     parse_wind_line,
 )
+from sensors.purple_air import PurpleAir
 
 
 def test_parse_aggie_air_line_preserves_accepted_payload():
@@ -55,3 +56,21 @@ def test_is_purple_air_minute_data_rejects_malformed_csv():
     malformed_line = 'timestamp,"AA:B:C:D:E:F,0' + ',0' * 34
 
     assert is_purple_air_minute_data(malformed_line) is False
+
+
+def test_purple_air_read_skips_non_utf8_noise_without_logging(capsys):
+    fields = ["timestamp", "AA:B:C:D:E:F", *("0" for _ in range(34))]
+    sensor = PurpleAir(
+        line_source=__import__("sensors.transport", fromlist=["ReplayLineSource"]).ReplayLineSource(
+            [
+                b"\xfc\xac\xa5\xa4\x86\xb5K)\x84\xa4\x84O\xc5\xc5L1\x86!\xa6\xb4\n",
+                (",".join(fields) + "\r\n").encode("utf-8"),
+            ]
+        )
+    )
+
+    assert sensor.read() == ""
+    captured = capsys.readouterr()
+    assert "Failed to convert line to utf-8" not in captured.out
+    assert sensor.read().startswith("timestamp,AA:B:C:D:E:F,")
+    sensor.close()
