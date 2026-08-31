@@ -8,6 +8,7 @@ Group=zero
 WorkingDirectory=/home/zero/camn-sensor-network/services/edge/
 ExecStart=/home/zero/camn-sensor-network/services/edge/sensor-node/.venv/bin/python \
     /home/zero/camn-sensor-network/services/edge/sensor-node/src/sensors/aggie_air.py \
+    --device ttyUSB0 \
     --path /home/zero/camn-sensor-network/services/edge/logs
 
 Restart=always
